@@ -38,20 +38,6 @@ public class AquaLabContext : DbContext
             new PointPrelevement { Id = 4, Nom = "Sortie Station", Description = "Eau traitée avant rejet", Localisation = "Point de rejet - Rivière", Actif = true }
         );
 
-        // Seed compte admin par défaut (mot de passe : Admin@2024)
-        // Hash PBKDF2 de "Admin@2024"
-        modelBuilder.Entity<Utilisateur>().HasData(
-            new Utilisateur
-            {
-                Id = 1,
-                Username = "admin",
-                PasswordHash = "SEED_HASH_PLACEHOLDER", // remplacé au démarrage
-                NomComplet = "Administrateur",
-                Email = "admin@aqualab.org",
-                Role = "Admin",
-                Actif = true,
-                DateCreation = new DateTime(2024, 1, 1)
-            }
-        );
+      
     }
 }
