@@ -8,10 +8,11 @@ using AquaLab.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Connexion SQLite : /tmp en fallback pour Railway ─────────────────────
-var connStr = builder.Configuration.GetConnectionString("Default")
-    ?? Environment.GetEnvironmentVariable("ConnectionStrings__Default")
-    ?? "Data Source=/tmp/aqualab.db";
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
+var connStr = "Data Source=/tmp/horizonvert.db";
+Console.WriteLine($"DB: {connStr}");
 
 builder.Services.AddControllers()
     .AddJsonOptions(o =>
@@ -23,23 +24,20 @@ builder.Services.AddControllers()
 
 builder.Services.AddDbContext<AquaLabContext>(opt => opt.UseSqlite(connStr));
 
-// ── JWT ───────────────────────────────────────────────────────────────────
-var jwtKey = builder.Configuration["Jwt:Key"]
-    ?? Environment.GetEnvironmentVariable("JWT_KEY")
-    ?? "HorizonVertSecretKey2024!ChangeInProduction!AtLeast32Chars";
+var jwtKey = "HorizonVertSecretKey2024!ChangeInProduction!AtLeast32Chars";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
     {
         opt.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
+            ValidateIssuer           = true,
+            ValidateAudience         = true,
+            ValidateLifetime         = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "HorizonVert",
-            ValidAudience = "HorizonVertApp",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+            ValidIssuer              = "HorizonVert",
+            ValidAudience            = "HorizonVertApp",
+            IssuerSigningKey         = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
         };
     });
 
@@ -54,31 +52,33 @@ builder.Services.AddCors(opt =>
 
 var app = builder.Build();
 
-// ── Init base de données + compte admin ───────────────────────────────────
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AquaLabContext>();
+    var db      = scope.ServiceProvider.GetRequiredService<AquaLabContext>();
     var authSvc = scope.ServiceProvider.GetRequiredService<AuthService>();
-
-    // Crée la DB si elle n'existe pas
-    db.Database.EnsureCreated();
-
-    // Crée le compte admin si inexistant
-    if (!db.Utilisateurs.Any())
+    try
     {
-        var adminPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD") ?? "Admin@2024";
-        db.Utilisateurs.Add(new Utilisateur
+        db.Database.EnsureCreated();
+        Console.WriteLine("DB creee OK");
+        if (!db.Utilisateurs.Any())
         {
-            Username = "admin",
-            PasswordHash = authSvc.HashPassword(adminPassword),
-            NomComplet = "Administrateur",
-            Email = "admin@horizonvert.org",
-            Role = "Admin",
-            Actif = true,
-            DateCreation = DateTime.Now
-        });
-        await db.SaveChangesAsync();
-        Console.WriteLine($"✅ Compte admin créé — DB: {connStr}");
+            db.Utilisateurs.Add(new Utilisateur
+            {
+                Username     = "admin",
+                PasswordHash = authSvc.HashPassword("Admin@2024"),
+                NomComplet   = "Administrateur",
+                Email        = "admin@horizonvert.org",
+                Role         = "Admin",
+                Actif        = true,
+                DateCreation = DateTime.Now
+            });
+            await db.SaveChangesAsync();
+            Console.WriteLine("Compte admin cree : admin / Admin@2024");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Erreur DB : {ex.Message}");
     }
 }
 
@@ -88,6 +88,8 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapGet("/health", () => "OK");
 app.MapFallbackToFile("index.html");
 
+Console.WriteLine($"HorizonVert APP demarre port {port}");
 app.Run();
