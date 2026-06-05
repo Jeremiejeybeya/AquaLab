@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AquaLab — Gestion du Laboratoire</title>
+<title>HorizonVert APP — Gestion du Laboratoire</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -186,6 +186,12 @@ select option{background:var(--bg3);}
 .toast.error{border-left:3px solid var(--danger);}
 .toast.info{border-left:3px solid var(--accent);}
 @keyframes slideIn{from{transform:translateX(20px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+
+/* RESPONSIVE TABLET */
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr);}.form-grid{grid-template-columns:repeat(2,1fr);}.form-grid.cols-4{grid-template-columns:repeat(2,1fr);}.param-grid{grid-template-columns:repeat(3,1fr);}.doses-grid{grid-template-columns:repeat(2,1fr);}.sidebar{width:180px;min-width:180px;}.modal{max-width:95%;padding:20px;}}
+
+/* RESPONSIVE MOBILE */
+@media(max-width:600px){body{flex-direction:column;overflow:auto;}.sidebar{display:none!important;}.main{display:flex!important;width:100%;}.content{padding:16px 14px 80px;}.topbar{padding:12px 16px;}.topbar h2{font-size:14px;}#topbar-date{display:none;}.login-box{width:94vw;padding:28px 20px;}.stats-grid{grid-template-columns:repeat(2,1fr);gap:10px;}.stat-value{font-size:24px;}.form-grid{grid-template-columns:1fr;}.form-grid.cols-2{grid-template-columns:1fr;}.form-grid.cols-4{grid-template-columns:repeat(2,1fr);}.form-group.full{grid-column:1;}.param-grid{grid-template-columns:repeat(2,1fr);}.doses-grid{grid-template-columns:1fr;}.modal-overlay{align-items:flex-end;}.modal{width:100%;max-width:100%;border-radius:16px 16px 0 0;padding:20px 16px;max-height:92vh;}.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}table{min-width:600px;}thead th{font-size:9px;padding:8px;}tbody td{padding:9px 8px;font-size:12px;}.card{padding:14px;}.reco-header{flex-direction:column;gap:12px;}.reco-score{font-size:28px;}.alerte-item{flex-direction:column;}#toast-container{bottom:80px;right:12px;left:12px;}.toast{min-width:unset;width:100%;}.section-header{flex-direction:column;align-items:flex-start;gap:10px;}.section-header .btn{width:100%;}}
 </style>
 </head>
 <body>
@@ -195,8 +201,8 @@ select option{background:var(--bg3);}
   <div class="login-box">
     <div class="login-logo">
       <span class="icon">💧</span>
-      <h1>AquaLab</h1>
-      <p>Traitement des eaux usées</p>
+      <h1>HorizonVert</h1>
+      <<p>Traitement des eaux usées</p>
     </div>
     <div class="login-error" id="login-error">Nom d'utilisateur ou mot de passe incorrect</div>
     <div class="form-group" style="margin-bottom:14px;">
@@ -220,7 +226,7 @@ select option{background:var(--bg3);}
 <aside class="sidebar" id="sidebar" style="display:none;">
   <div class="logo">
     <div class="logo-icon">💧</div>
-    <h1>AquaLab</h1>
+    <h1>HorizonVert</h1>
     <p>Traitement des eaux</p>
   </div>
   <nav id="nav">
@@ -264,13 +270,23 @@ select option{background:var(--bg3);}
 </div>
 <div id="toast-container"></div>
 
+<!-- MOBILE NAV -->
+<nav id="mobile-nav" style="display:none;">
+  <div class="mobile-nav-item active" data-page="dashboard"><span class="icon">📊</span><span>Accueil</span></div>
+  <div class="mobile-nav-item" data-page="prelevements"><span class="icon">🧪</span><span>Prélèv.</span></div>
+  <div class="mobile-nav-item" data-page="traitements"><span class="icon">⚗️</span><span>Traitem.</span></div>
+  <div class="mobile-nav-item" style="position:relative;" data-page="alertes"><span class="icon">🔔</span><span>Alertes</span><span class="m-badge" id="m-badge-alertes"></span></div>
+  <div class="mobile-nav-item" data-page="rapports"><span class="icon">📈</span><span>Rapports</span></div>
+  <div class="mobile-nav-item" data-page="profil"><span class="icon">👤</span><span>Profil</span></div>
+</nav>
+
 <script>
 // ══════════════════════════════════════════════════════════════
 //  CONFIG & AUTH
 // ══════════════════════════════════════════════════════════════
 const API = '/api';
-let AUTH_TOKEN = localStorage.getItem('aqualab_token');
-let CURRENT_USER = JSON.parse(localStorage.getItem('aqualab_user') || 'null');
+let AUTH_TOKEN = localStorage.getItem('horizonvert_token');
+let CURRENT_USER = JSON.parse(localStorage.getItem('horizonvert_user') || 'null');
 
 async function apiFetch(path, options = {}) {
   const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
@@ -306,8 +322,8 @@ async function doLogin() {
     const data = await res.json();
     AUTH_TOKEN = data.token;
     CURRENT_USER = data.user;
-    localStorage.setItem('aqualab_token', AUTH_TOKEN);
-    localStorage.setItem('aqualab_user', JSON.stringify(CURRENT_USER));
+    localStorage.setItem('horizonvert_token', AUTH_TOKEN);
+    localStorage.setItem('horizonvert_user', JSON.stringify(CURRENT_USER));
 
     showApp();
   } catch(e) {
@@ -321,8 +337,8 @@ document.getElementById('login-password').addEventListener('keydown', e => {
 
 function doLogout() {
   AUTH_TOKEN = null; CURRENT_USER = null;
-  localStorage.removeItem('aqualab_token');
-  localStorage.removeItem('aqualab_user');
+  localStorage.removeItem('horizonvert_token');
+  localStorage.removeItem('horizonvert_user');
   document.getElementById('login-page').style.display = 'flex';
   document.getElementById('sidebar').style.display = 'none';
   document.getElementById('main-app').style.display = 'none';
@@ -330,7 +346,7 @@ function doLogout() {
 
 function showApp() {
   document.getElementById('login-page').style.display = 'none';
-  document.getElementById('sidebar').style.display = 'flex';
+  if(window.innerWidth > 600) document.getElementById('sidebar').style.display = 'flex'; if(window.innerWidth <= 600) document.getElementById('mobile-nav').style.display = 'flex';
   document.getElementById('main-app').style.display = 'flex';
 
   // Afficher infos user
@@ -897,8 +913,28 @@ async function changerMotDePasse() {
   else toast('Erreur changement mot de passe','error');
 }
 
-// ══════════════════════════════════════════════════════════════
-//  INIT
+
+// ══ RESPONSIVE ═══════════════════════════════════════════════
+function handleResize() {
+  if (!CURRENT_USER) return;
+  const isMobile = window.innerWidth <= 600;
+  const sidebar = document.getElementById('sidebar');
+  const mobileNav = document.getElementById('mobile-nav');
+  if (sidebar) sidebar.style.display = isMobile ? 'none' : 'flex';
+  if (mobileNav) mobileNav.style.display = isMobile ? 'flex' : 'none';
+}
+window.addEventListener('resize', handleResize);
+
+document.getElementById('mobile-nav').addEventListener('click', e => {
+  const item = e.target.closest('.mobile-nav-item');
+  if (item?.dataset.page) {
+    document.querySelectorAll('.mobile-nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+    navigate(item.dataset.page);
+  }
+});
+
+// ══ INIT ══════════════════════════════════════════════════════
 // ══════════════════════════════════════════════════════════════
 if(AUTH_TOKEN && CURRENT_USER) {
   showApp();
