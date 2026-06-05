@@ -96,8 +96,8 @@ public class PdfService
 
                         void LigneParam(string nom, double? val, string unite, string norme, bool hors = false)
                         {
-                            var bg = hors ? "#fff3cd" : Colors.White;
-                            var fg = hors ? "#856404" : Colors.Black;
+                            string bg = hors ? "#fff3cd" : "#ffffff";
+                            string fg = hors ? "#856404" : "#000000";
                             table.Cell().Background(bg).Padding(5).Text(nom).FontSize(9);
                             table.Cell().Background(bg).Padding(5)
                                 .Text(val?.ToString("F2") ?? "—").FontSize(9).FontColor(fg).Bold();
@@ -276,7 +276,7 @@ public class PdfService
                         bool alt = false;
                         foreach (var p in prelevements.OrderBy(x => x.DateHeure))
                         {
-                            var bg = alt ? "#f9f9f9" : Colors.White;
+                            string bg = alt ? "#f9f9f9" : "#ffffff";
                             alt = !alt;
                             table.Cell().Background(bg).Padding(4).Text(p.Id.ToString()).FontSize(8);
                             table.Cell().Background(bg).Padding(4).Text(p.DateHeure.ToString("dd/MM HH:mm")).FontSize(8);
