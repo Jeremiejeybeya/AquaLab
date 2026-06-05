@@ -7,1391 +7,904 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
-/* ═══════════════════════════════════════════════════════════
-   DESIGN SYSTEM — Industrial / Scientific Aesthetic
-   Palette: Deep teal, near-black, acid green accents
-═══════════════════════════════════════════════════════════ */
 :root {
-  --bg:        #0c1117;
-  --bg2:       #131b24;
-  --bg3:       #1a2635;
-  --border:    #1e3148;
-  --border2:   #2a4060;
-  --text:      #c8ddf0;
-  --text2:     #7a9ab8;
-  --text3:     #4a6b8a;
-  --accent:    #00e5b0;
-  --accent2:   #00b8ff;
-  --warn:      #ffbe00;
-  --danger:    #ff4d6d;
-  --ok:        #39ff8a;
-  --mono:      'DM Mono', monospace;
-  --sans:      'Sora', sans-serif;
-  --radius:    8px;
-  --shadow:    0 4px 24px rgba(0,0,0,0.4);
+  --bg:#0c1117; --bg2:#131b24; --bg3:#1a2635;
+  --border:#1e3148; --border2:#2a4060;
+  --text:#c8ddf0; --text2:#7a9ab8; --text3:#4a6b8a;
+  --accent:#00e5b0; --accent2:#00b8ff;
+  --warn:#ffbe00; --danger:#ff4d6d; --ok:#39ff8a;
+  --mono:'DM Mono',monospace; --sans:'Sora',sans-serif;
+  --radius:8px;
 }
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex;overflow:hidden;}
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
-body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--text);
-  display: flex;
-  overflow: hidden;
+/* ── LOGIN PAGE ─────────────────────────────────────── */
+#login-page {
+  position:fixed;inset:0;z-index:9000;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
 }
+.login-box {
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:16px;
+  padding:40px;
+  width:380px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.login-logo { text-align:center; margin-bottom:32px; }
+.login-logo .icon { font-size:48px; display:block; margin-bottom:8px; }
+.login-logo h1 { font-size:24px; font-weight:700; color:var(--accent); }
+.login-logo p { font-size:12px; color:var(--text3); text-transform:uppercase; letter-spacing:2px; margin-top:2px; }
+.login-error { background:rgba(255,77,109,.15); border:1px solid rgba(255,77,109,.3); border-radius:6px; padding:10px 14px; font-size:13px; color:var(--danger); margin-bottom:14px; display:none; }
 
-/* ── SIDEBAR ─────────────────────────────────────── */
-.sidebar {
-  width: 220px;
-  min-width: 220px;
-  background: var(--bg2);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  padding: 24px 0 16px;
-  z-index: 10;
-}
-.logo {
-  padding: 0 20px 28px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 12px;
-}
-.logo-icon { font-size: 26px; margin-bottom: 4px; }
-.logo h1 { font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: 1px; }
-.logo p  { font-size: 10px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+/* ── SIDEBAR ─────────────────────────────────────────── */
+.sidebar { width:220px;min-width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 0 16px;z-index:10; }
+.logo { padding:0 20px 28px;border-bottom:1px solid var(--border);margin-bottom:12px; }
+.logo-icon { font-size:26px;margin-bottom:4px; }
+.logo h1 { font-size:18px;font-weight:700;color:var(--accent);letter-spacing:1px; }
+.logo p { font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:2px; }
+.nav-item { display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);border-left:3px solid transparent;transition:all .15s; }
+.nav-item:hover { background:var(--bg3);color:var(--text); }
+.nav-item.active { background:var(--bg3);color:var(--accent);border-left-color:var(--accent); }
+.nav-item .icon { font-size:16px;width:20px;text-align:center; }
+.nav-badge { margin-left:auto;background:var(--danger);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;font-family:var(--mono);display:none; }
+.nav-badge.show { display:block; }
+.sidebar-footer { margin-top:auto;padding:12px 20px;font-size:11px;color:var(--text3); }
+.user-chip { display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg3);border-radius:8px;margin:0 12px 12px;cursor:pointer;transition:all .15s; }
+.user-chip:hover { border-color:var(--accent); }
+.user-avatar { width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--bg); }
+.user-name { font-size:12px;font-weight:600; }
+.user-role { font-size:10px;color:var(--text3); }
 
-.nav-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 13px; font-weight: 500;
-  color: var(--text2);
-  border-left: 3px solid transparent;
-  transition: all .15s;
-  position: relative;
-}
-.nav-item:hover  { background: var(--bg3); color: var(--text); }
-.nav-item.active { background: var(--bg3); color: var(--accent); border-left-color: var(--accent); }
-.nav-item .icon  { font-size: 16px; width: 20px; text-align: center; }
-.nav-badge {
-  margin-left: auto;
-  background: var(--danger);
-  color: #fff;
-  font-size: 10px; font-weight: 700;
-  border-radius: 10px;
-  padding: 1px 6px;
-  font-family: var(--mono);
-  display: none;
-}
-.nav-badge.show { display: block; }
+/* ── MAIN ────────────────────────────────────────────── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;}
+.topbar h2{font-size:16px;font-weight:600;}
+.content{flex:1;overflow-y:auto;padding:24px 28px;}
 
-.sidebar-footer { margin-top: auto; padding: 12px 20px; font-size: 11px; color: var(--text3); }
+/* ── CARDS ───────────────────────────────────────────── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;}
+.card-title{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--text3);margin-bottom:12px;font-family:var(--mono);}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.stat-card.teal::before{background:var(--accent);}
+.stat-card.blue::before{background:var(--accent2);}
+.stat-card.warn::before{background:var(--warn);}
+.stat-card.danger::before{background:var(--danger);}
+.stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-family:var(--mono);}
+.stat-value{font-size:32px;font-weight:700;font-family:var(--mono);}
+.stat-card.teal .stat-value{color:var(--accent);}
+.stat-card.blue .stat-value{color:var(--accent2);}
+.stat-card.warn .stat-value{color:var(--warn);}
+.stat-card.danger .stat-value{color:var(--danger);}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:6px;}
 
-/* ── MAIN CONTENT ────────────────────────────────── */
-.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+/* ── TABLE ───────────────────────────────────────────── */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{text-align:left;padding:10px 12px;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);border-bottom:1px solid var(--border);font-family:var(--mono);white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--border);transition:background .12s;}
+tbody tr:hover{background:var(--bg3);}
+tbody td{padding:11px 12px;color:var(--text);vertical-align:middle;}
+tbody td.mono{font-family:var(--mono);font-size:12px;}
 
-.topbar {
-  background: var(--bg2);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 28px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.topbar h2 { font-size: 16px; font-weight: 600; }
-.topbar-right { display: flex; gap: 10px; align-items: center; }
+/* ── BADGES ──────────────────────────────────────────── */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--mono);white-space:nowrap;}
+.badge-ok{background:rgba(57,255,138,.15);color:var(--ok);}
+.badge-warn{background:rgba(255,190,0,.15);color:var(--warn);}
+.badge-danger{background:rgba(255,77,109,.15);color:var(--danger);}
+.badge-info{background:rgba(0,229,176,.15);color:var(--accent);}
+.badge-blue{background:rgba(0,184,255,.15);color:var(--accent2);}
+.badge-neutral{background:rgba(122,154,184,.1);color:var(--text2);}
 
-.content { flex: 1; overflow-y: auto; padding: 24px 28px; }
+/* ── FORMS ───────────────────────────────────────────── */
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.form-grid.cols-2{grid-template-columns:repeat(2,1fr);}
+.form-grid.cols-4{grid-template-columns:repeat(4,1fr);}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-family:var(--mono);}
+input,select,textarea{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:8px 12px;color:var(--text);font-family:var(--sans);font-size:13px;transition:border .15s;width:100%;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,229,176,.1);}
+select option{background:var(--bg3);}
 
-/* ── CARDS / PANELS ──────────────────────────────── */
-.card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 16px;
-}
-.card-title { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--text3); margin-bottom: 12px; font-family: var(--mono); }
+/* ── BUTTONS ─────────────────────────────────────────── */
+.btn{padding:9px 18px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:var(--sans);transition:all .15s;white-space:nowrap;}
+.btn-primary{background:var(--accent);color:#0c1117;}
+.btn-primary:hover{background:#00c99a;}
+.btn-secondary{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+.btn-danger{background:rgba(255,77,109,.15);color:var(--danger);border:1px solid rgba(255,77,109,.3);}
+.btn-danger:hover{background:var(--danger);color:#fff;}
+.btn-warn{background:rgba(255,190,0,.15);color:var(--warn);border:1px solid rgba(255,190,0,.3);}
+.btn-sm{padding:5px 12px;font-size:12px;}
+.btn-icon{padding:7px;font-size:14px;line-height:1;}
 
-/* ── DASHBOARD STATS ─────────────────────────────── */
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
-.stat-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px;
-  position: relative;
-  overflow: hidden;
-}
-.stat-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-}
-.stat-card.teal::before   { background: var(--accent); }
-.stat-card.blue::before   { background: var(--accent2); }
-.stat-card.warn::before   { background: var(--warn); }
-.stat-card.danger::before { background: var(--danger); }
-.stat-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; font-family: var(--mono); }
-.stat-value { font-size: 32px; font-weight: 700; font-family: var(--mono); }
-.stat-card.teal   .stat-value { color: var(--accent); }
-.stat-card.blue   .stat-value { color: var(--accent2); }
-.stat-card.warn   .stat-value { color: var(--warn); }
-.stat-card.danger .stat-value { color: var(--danger); }
-.stat-sub { font-size: 11px; color: var(--text3); margin-top: 6px; }
+/* ── MODAL ───────────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:28px;width:90%;max-width:780px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .2s;}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+.modal-header h3{font-size:16px;font-weight:600;}
+.modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;padding-top:16px;border-top:1px solid var(--border);}
 
-/* ── TABLE ────────────────────────────────────────── */
-.table-wrap { overflow-x: auto; }
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-thead th {
-  text-align: left;
-  padding: 10px 12px;
-  font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px;
-  color: var(--text3);
-  border-bottom: 1px solid var(--border);
-  font-family: var(--mono);
-  white-space: nowrap;
-}
-tbody tr {
-  border-bottom: 1px solid var(--border);
-  transition: background .12s;
-  cursor: pointer;
-}
-tbody tr:hover { background: var(--bg3); }
-tbody td {
-  padding: 11px 12px;
-  color: var(--text);
-  vertical-align: middle;
-}
-tbody td.mono { font-family: var(--mono); font-size: 12px; }
+/* ── RECO BOX ────────────────────────────────────────── */
+.reco-box{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:20px;margin-top:16px;}
+.reco-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.reco-score{font-family:var(--mono);font-size:36px;font-weight:700;}
+.score-ok{color:var(--ok);} .score-warn{color:var(--warn);} .score-danger{color:var(--danger);}
+.reco-actions{list-style:none;}
+.reco-actions li{padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;display:flex;gap:8px;}
+.reco-actions li:last-child{border:none;}
+.doses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0;}
+.dose-item{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px;}
+.dose-produit{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-family:var(--mono);}
+.dose-valeur{font-size:20px;font-weight:700;color:var(--accent);font-family:var(--mono);margin:4px 0;}
+.dose-unit{font-size:11px;color:var(--text2);}
 
-/* ── BADGES ──────────────────────────────────────── */
-.badge {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 11px; font-weight: 600;
-  font-family: var(--mono);
-  white-space: nowrap;
-}
-.badge-ok      { background: rgba(57,255,138,.15); color: var(--ok); }
-.badge-warn    { background: rgba(255,190,0,.15); color: var(--warn); }
-.badge-danger  { background: rgba(255,77,109,.15); color: var(--danger); }
-.badge-info    { background: rgba(0,229,176,.15); color: var(--accent); }
-.badge-blue    { background: rgba(0,184,255,.15); color: var(--accent2); }
-.badge-neutral { background: rgba(122,154,184,.1); color: var(--text2); }
+/* ── ALERTES ─────────────────────────────────────────── */
+.alerte-item{background:var(--bg3);border-radius:6px;padding:12px 16px;margin-bottom:8px;border-left:3px solid var(--border2);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.alerte-item.Critique{border-left-color:var(--danger);}
+.alerte-item.Avertissement{border-left-color:var(--warn);}
+.alerte-item.Info{border-left-color:var(--accent);}
+.alerte-titre{font-size:13px;font-weight:600;}
+.alerte-msg{font-size:12px;color:var(--text2);margin-top:3px;}
+.alerte-meta{font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:4px;}
 
-/* ── FORMS ────────────────────────────────────────── */
-.form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-.form-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
-.form-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
-.form-group { display: flex; flex-direction: column; gap: 5px; }
-.form-group.full { grid-column: 1 / -1; }
+/* ── PARAMS ──────────────────────────────────────────── */
+.param-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.param-item{background:var(--bg3);border-radius:6px;padding:10px 12px;}
+.param-name{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-family:var(--mono);}
+.param-value{font-size:16px;font-weight:600;font-family:var(--mono);margin:3px 0;}
+.param-unit{font-size:10px;color:var(--text3);}
+.param-ok .param-value{color:var(--ok);} .param-warn .param-value{color:var(--warn);} .param-danger .param-value{color:var(--danger);} .param-neutral .param-value{color:var(--text);}
 
-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; font-family: var(--mono); }
-input, select, textarea {
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 6px;
-  padding: 8px 12px;
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 13px;
-  transition: border .15s;
-  width: 100%;
-}
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(0,229,176,.1);
-}
-select option { background: var(--bg3); }
-
-/* ── BUTTONS ─────────────────────────────────────── */
-.btn {
-  padding: 9px 18px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 13px; font-weight: 600;
-  font-family: var(--sans);
-  transition: all .15s;
-  white-space: nowrap;
-}
-.btn-primary   { background: var(--accent); color: #0c1117; }
-.btn-primary:hover { background: #00c99a; }
-.btn-secondary { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); }
-.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
-.btn-danger    { background: rgba(255,77,109,.15); color: var(--danger); border: 1px solid rgba(255,77,109,.3); }
-.btn-danger:hover { background: var(--danger); color: #fff; }
-.btn-warn      { background: rgba(255,190,0,.15); color: var(--warn); border: 1px solid rgba(255,190,0,.3); }
-.btn-sm        { padding: 5px 12px; font-size: 12px; }
-.btn-icon      { padding: 7px; font-size: 14px; line-height: 1; }
-
-/* ── MODAL ────────────────────────────────────────── */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.65);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1000;
-  opacity: 0; pointer-events: none;
-  transition: opacity .2s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal {
-  background: var(--bg2);
-  border: 1px solid var(--border2);
-  border-radius: 12px;
-  padding: 28px;
-  width: 90%; max-width: 780px;
-  max-height: 90vh;
-  overflow-y: auto;
-  transform: translateY(20px);
-  transition: transform .2s;
-}
-.modal-overlay.open .modal { transform: translateY(0); }
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
-.modal-header h3 { font-size: 16px; font-weight: 600; }
-.modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--border); }
-
-/* ── RECOMMANDATION CARD ─────────────────────────── */
-.reco-box {
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-top: 16px;
-}
-.reco-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
-.reco-score { font-family: var(--mono); font-size: 36px; font-weight: 700; }
-.score-ok      { color: var(--ok); }
-.score-warn    { color: var(--warn); }
-.score-danger  { color: var(--danger); }
-.reco-actions { list-style: none; }
-.reco-actions li { padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; display: flex; gap: 8px; }
-.reco-actions li:last-child { border: none; }
-
-.doses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 14px 0; }
-.dose-item {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 12px;
-}
-.dose-produit { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; font-family: var(--mono); }
-.dose-valeur  { font-size: 20px; font-weight: 700; color: var(--accent); font-family: var(--mono); margin: 4px 0; }
-.dose-unit    { font-size: 11px; color: var(--text2); }
-
-/* ── ALERTES ─────────────────────────────────────── */
-.alerte-item {
-  background: var(--bg3);
-  border-radius: 6px;
-  padding: 12px 16px;
-  margin-bottom: 8px;
-  border-left: 3px solid var(--border2);
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
-}
-.alerte-item.Critique    { border-left-color: var(--danger); }
-.alerte-item.Avertissement { border-left-color: var(--warn); }
-.alerte-item.Info        { border-left-color: var(--accent); }
-.alerte-titre { font-size: 13px; font-weight: 600; }
-.alerte-msg   { font-size: 12px; color: var(--text2); margin-top: 3px; }
-.alerte-meta  { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 4px; }
-
-/* ── PROGRESS BAR ────────────────────────────────── */
-.progress-bar {
-  height: 4px;
-  background: var(--bg3);
-  border-radius: 2px;
-  overflow: hidden;
-  margin-top: 4px;
-}
-.progress-fill { height: 100%; border-radius: 2px; transition: width .4s; }
-
-/* ── PARAMS TABLE ────────────────────────────────── */
-.param-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-.param-item {
-  background: var(--bg3);
-  border-radius: 6px;
-  padding: 10px 12px;
-}
-.param-name  { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; font-family: var(--mono); }
-.param-value { font-size: 16px; font-weight: 600; font-family: var(--mono); margin: 3px 0; }
-.param-unit  { font-size: 10px; color: var(--text3); }
-.param-ok    .param-value { color: var(--ok); }
-.param-warn  .param-value { color: var(--warn); }
-.param-danger .param-value { color: var(--danger); }
-.param-neutral .param-value { color: var(--text); }
-
-/* ── EMPTY STATE ─────────────────────────────────── */
-.empty {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--text3);
-}
-.empty .icon { font-size: 48px; margin-bottom: 12px; }
-.empty p { font-size: 14px; }
-
-/* ── TABS ─────────────────────────────────────────── */
-.tabs { display: flex; gap: 2px; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
-.tab {
-  padding: 9px 18px;
-  font-size: 13px; cursor: pointer;
-  color: var(--text2);
-  border-bottom: 2px solid transparent;
-  transition: all .15s;
-}
-.tab:hover  { color: var(--text); }
-.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-/* ── SCROLLBAR ────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
-
-/* ── TOAST ────────────────────────────────────────── */
-#toast-container {
-  position: fixed; bottom: 24px; right: 24px;
-  z-index: 9999;
-  display: flex; flex-direction: column; gap: 8px;
-}
-.toast {
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 13px;
-  min-width: 260px;
-  animation: slideIn .2s ease;
-  display: flex; align-items: center; gap: 10px;
-}
-.toast.ok     { border-left: 3px solid var(--ok); }
-.toast.error  { border-left: 3px solid var(--danger); }
-.toast.info   { border-left: 3px solid var(--accent); }
-
-@keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-/* ── SEARCH ──────────────────────────────────────── */
-.search-bar {
-  display: flex; align-items: center; gap: 10px;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: 6px;
-  padding: 7px 12px;
-}
-.search-bar input {
-  background: none; border: none;
-  padding: 0; font-size: 13px; color: var(--text);
-  flex: 1;
-}
-.search-bar input:focus { outline: none; box-shadow: none; }
-
-/* ── SECTION HEADER ─────────────────────────────── */
-.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-.section-header h3 { font-size: 15px; font-weight: 600; }
-
-/* ── SEPARATOR ──────────────────────────────────── */
-.sep { height: 1px; background: var(--border); margin: 20px 0; }
-
-/* ── CHART PLACEHOLDER ───────────────────────────── */
-.mini-chart { height: 60px; display: flex; align-items: flex-end; gap: 3px; }
-.bar { flex: 1; background: var(--accent); border-radius: 2px 2px 0 0; opacity: 0.6; min-height: 4px; transition: opacity .2s; }
-.bar:hover { opacity: 1; }
+/* ── MISC ────────────────────────────────────────────── */
+.empty{text-align:center;padding:60px 20px;color:var(--text3);}
+.empty .icon{font-size:48px;margin-bottom:12px;}
+.tabs{display:flex;gap:2px;margin-bottom:20px;border-bottom:1px solid var(--border);}
+.tab{padding:9px 18px;font-size:13px;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;transition:all .15s;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.sep{height:1px;background:var(--border);margin:20px 0;}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.section-header h3{font-size:15px;font-weight:600;}
+.mini-chart{height:60px;display:flex;align-items:flex-end;gap:3px;}
+.bar{flex:1;background:var(--accent);border-radius:2px 2px 0 0;opacity:0.6;min-height:4px;transition:opacity .2s;}
+.bar:hover{opacity:1;}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+#toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+.toast{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;font-size:13px;min-width:260px;animation:slideIn .2s ease;display:flex;align-items:center;gap:10px;}
+.toast.ok{border-left:3px solid var(--ok);}
+.toast.error{border-left:3px solid var(--danger);}
+.toast.info{border-left:3px solid var(--accent);}
+@keyframes slideIn{from{transform:translateX(20px);opacity:0;}to{transform:translateX(0);opacity:1;}}
 </style>
 </head>
 <body>
 
-<!-- ═══ SIDEBAR ═════════════════════════════════════════════════ -->
-<aside class="sidebar">
+<!-- ═══ LOGIN PAGE ═══════════════════════════════════════════ -->
+<div id="login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <span class="icon">💧</span>
+      <h1>AquaLab</h1>
+      <p>Traitement des eaux usées</p>
+    </div>
+    <div class="login-error" id="login-error">Nom d'utilisateur ou mot de passe incorrect</div>
+    <div class="form-group" style="margin-bottom:14px;">
+      <label>Nom d'utilisateur</label>
+      <input type="text" id="login-username" placeholder="admin" autocomplete="username"/>
+    </div>
+    <div class="form-group" style="margin-bottom:22px;">
+      <label>Mot de passe</label>
+      <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"/>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:12px;" onclick="doLogin()">
+      Connexion →
+    </button>
+    <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--text3);">
+      Compte par défaut : <span style="font-family:var(--mono);color:var(--accent);">admin / Admin@2024</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ APP ═══════════════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar" style="display:none;">
   <div class="logo">
     <div class="logo-icon">💧</div>
     <h1>AquaLab</h1>
     <p>Traitement des eaux</p>
   </div>
-
   <nav id="nav">
-    <div class="nav-item active" data-page="dashboard">
-      <span class="icon">📊</span> Tableau de bord
-    </div>
-    <div class="nav-item" data-page="prelevements">
-      <span class="icon">🧪</span> Prélèvements
-    </div>
-    <div class="nav-item" data-page="traitements">
-      <span class="icon">⚗️</span> Traitements
-    </div>
-    <div class="nav-item" data-page="alertes">
-      <span class="icon">🔔</span> Alertes
-      <span class="nav-badge" id="badge-alertes">0</span>
-    </div>
-    <div class="nav-item" data-page="rapports">
-      <span class="icon">📈</span> Rapports
-    </div>
-    <div class="nav-item" data-page="techniciens">
-      <span class="icon">👤</span> Techniciens
-    </div>
-    <div class="nav-item" data-page="points">
-      <span class="icon">📍</span> Sites
-    </div>
+    <div class="nav-item active" data-page="dashboard"><span class="icon">📊</span> Tableau de bord</div>
+    <div class="nav-item" data-page="prelevements"><span class="icon">🧪</span> Prélèvements</div>
+    <div class="nav-item" data-page="traitements"><span class="icon">⚗️</span> Traitements</div>
+    <div class="nav-item" data-page="alertes"><span class="icon">🔔</span> Alertes<span class="nav-badge" id="badge-alertes">0</span></div>
+    <div class="nav-item" data-page="rapports"><span class="icon">📈</span> Rapports</div>
+    <div class="nav-item" data-page="techniciens"><span class="icon">👤</span> Techniciens</div>
+    <div class="nav-item" data-page="points"><span class="icon">📍</span> Sites</div>
+    <div class="nav-item admin-only" data-page="utilisateurs" style="display:none;"><span class="icon">🔐</span> Utilisateurs</div>
   </nav>
-
   <div class="sidebar-footer">
-    <div>AquaLab v1.0</div>
-    <div style="color: var(--accent); font-size:10px; margin-top:2px;">● Système actif</div>
+    <div class="user-chip" onclick="navigate('profil')">
+      <div class="user-avatar" id="user-avatar">?</div>
+      <div>
+        <div class="user-name" id="user-name">—</div>
+        <div class="user-role" id="user-role">—</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:0 2px;">
+      <span style="color:var(--accent);font-size:10px;">● Système actif</span>
+      <button class="btn btn-sm btn-danger" onclick="doLogout()" style="padding:4px 8px;font-size:11px;">Déconnexion</button>
+    </div>
   </div>
 </aside>
 
-<!-- ═══ MAIN ════════════════════════════════════════════════════ -->
-<div class="main">
+<div class="main" id="main-app" style="display:none;">
   <div class="topbar">
     <h2 id="page-title">Tableau de bord</h2>
-    <div class="topbar-right">
-      <span id="topbar-date" style="font-size:12px; color:var(--text3); font-family:var(--mono);"></span>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <span id="topbar-date" style="font-size:12px;color:var(--text3);font-family:var(--mono);"></span>
     </div>
   </div>
-
-  <div class="content" id="content">
-    <div class="empty"><div class="icon">⏳</div><p>Chargement…</p></div>
-  </div>
+  <div class="content" id="content"><div class="empty"><div class="icon">⏳</div></div></div>
 </div>
 
-<!-- ═══ MODAL ═══════════════════════════════════════════════════ -->
+<!-- ═══ MODAL ════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="modal">
   <div class="modal" id="modal-body"></div>
 </div>
-
-<!-- TOAST -->
 <div id="toast-container"></div>
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  CONFIG & UTILS
+//  CONFIG & AUTH
 // ══════════════════════════════════════════════════════════════
 const API = '/api';
+let AUTH_TOKEN = localStorage.getItem('aqualab_token');
+let CURRENT_USER = JSON.parse(localStorage.getItem('aqualab_user') || 'null');
 
-async function get(path)    { return (await fetch(API+path)).json(); }
-async function post(path,d) { return (await fetch(API+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)})).json(); }
-async function put(path,d)  { return (await fetch(API+path,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)})).json(); }
-async function del(path)    { return fetch(API+path,{method:'DELETE'}); }
+async function apiFetch(path, options = {}) {
+  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  if (AUTH_TOKEN) headers['Authorization'] = `Bearer ${AUTH_TOKEN}`;
+  const res = await fetch(API + path, { ...options, headers });
+  if (res.status === 401) { doLogout(); throw new Error('Non autorisé'); }
+  return res;
+}
 
+async function get(path)    { return (await apiFetch(path)).json(); }
+async function post(path,d) { return (await apiFetch(path,{method:'POST',body:JSON.stringify(d)})).json(); }
+async function put(path,d)  { return (await apiFetch(path,{method:'PUT',body:JSON.stringify(d)})).json(); }
+async function del(path)    { return apiFetch(path,{method:'DELETE'}); }
+
+// ── Auth ───────────────────────────────────────────────────────
+async function doLogin() {
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value;
+  document.getElementById('login-error').style.display = 'none';
+
+  try {
+    const res = await fetch(API + '/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    if (!res.ok) {
+      document.getElementById('login-error').style.display = 'block';
+      return;
+    }
+
+    const data = await res.json();
+    AUTH_TOKEN = data.token;
+    CURRENT_USER = data.user;
+    localStorage.setItem('aqualab_token', AUTH_TOKEN);
+    localStorage.setItem('aqualab_user', JSON.stringify(CURRENT_USER));
+
+    showApp();
+  } catch(e) {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+document.getElementById('login-password').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+function doLogout() {
+  AUTH_TOKEN = null; CURRENT_USER = null;
+  localStorage.removeItem('aqualab_token');
+  localStorage.removeItem('aqualab_user');
+  document.getElementById('login-page').style.display = 'flex';
+  document.getElementById('sidebar').style.display = 'none';
+  document.getElementById('main-app').style.display = 'none';
+}
+
+function showApp() {
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('sidebar').style.display = 'flex';
+  document.getElementById('main-app').style.display = 'flex';
+
+  // Afficher infos user
+  document.getElementById('user-name').textContent = CURRENT_USER?.nomComplet || CURRENT_USER?.username || '—';
+  document.getElementById('user-role').textContent = CURRENT_USER?.role || '—';
+  document.getElementById('user-avatar').textContent = (CURRENT_USER?.nomComplet || 'A')[0].toUpperCase();
+
+  // Afficher menu admin si besoin
+  if (CURRENT_USER?.role === 'Admin') {
+    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
+  }
+
+  navigate('dashboard');
+  refreshAlerteBadge();
+  setInterval(refreshAlerteBadge, 60000);
+}
+
+// ── Utils ──────────────────────────────────────────────────────
 function toast(msg, type='info') {
   const t = document.createElement('div');
   t.className = `toast ${type}`;
-  const icon = type==='ok'?'✅': type==='error'?'❌':'ℹ️';
-  t.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
+  t.innerHTML = `<span>${type==='ok'?'✅':type==='error'?'❌':'ℹ️'}</span><span>${msg}</span>`;
   document.getElementById('toast-container').appendChild(t);
   setTimeout(()=>t.remove(), 3500);
 }
-
 function fmt(v, d=1) { return v==null?'—': (+v).toFixed(d); }
-function fmtDate(s)  { return s? new Date(s).toLocaleString('fr-CA',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}): '—'; }
-function fmtDate2(s) { return s? new Date(s).toLocaleDateString('fr-CA',{day:'2-digit',month:'short',year:'numeric'}): '—'; }
-
-function openModal(html) {
-  document.getElementById('modal-body').innerHTML = html;
-  document.getElementById('modal').classList.add('open');
-}
+function fmtDate(s) { return s?new Date(s).toLocaleString('fr-CA',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—'; }
+function fmtDate2(s){ return s?new Date(s).toLocaleDateString('fr-CA',{day:'2-digit',month:'short',year:'numeric'}):'—'; }
+function openModal(html) { document.getElementById('modal-body').innerHTML=html; document.getElementById('modal').classList.add('open'); }
 function closeModal() { document.getElementById('modal').classList.remove('open'); }
 document.getElementById('modal').addEventListener('click', e => { if(e.target.id==='modal') closeModal(); });
+function updateDate() { document.getElementById('topbar-date').textContent=new Date().toLocaleString('fr-CA',{weekday:'short',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
+setInterval(updateDate,30000); updateDate();
 
-// ── Page router ────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+//  ROUTER
+// ══════════════════════════════════════════════════════════════
 const pages = {};
 let currentPage = 'dashboard';
-
 function navigate(page) {
   currentPage = page;
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page===page));
-  const titles = {
-    dashboard:'Tableau de bord', prelevements:'Prélèvements',
-    traitements:'Traitements', alertes:'Alertes',
-    rapports:'Rapports', techniciens:'Techniciens', points:'Sites de prélèvement'
-  };
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===page));
+  const titles = { dashboard:'Tableau de bord', prelevements:'Prélèvements', traitements:'Traitements',
+    alertes:'Alertes', rapports:'Rapports', techniciens:'Techniciens', points:'Sites', utilisateurs:'Utilisateurs', profil:'Mon profil' };
   document.getElementById('page-title').textContent = titles[page]||page;
   pages[page]?.();
 }
-
 document.getElementById('nav').addEventListener('click', e => {
   const item = e.target.closest('.nav-item');
-  if (item?.dataset.page) navigate(item.dataset.page);
+  if(item?.dataset.page) navigate(item.dataset.page);
 });
 
-// Update date
-function updateDate() {
-  document.getElementById('topbar-date').textContent =
-    new Date().toLocaleString('fr-CA',{weekday:'short',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
-}
-setInterval(updateDate, 30000);
-updateDate();
-
 // ══════════════════════════════════════════════════════════════
-//  1. DASHBOARD
+//  DASHBOARD
 // ══════════════════════════════════════════════════════════════
 pages.dashboard = async () => {
   const c = document.getElementById('content');
-  c.innerHTML = `<div class="empty"><div class="icon">⏳</div><p>Chargement…</p></div>`;
-
-  const [dash, alertes] = await Promise.all([
-    get('/rapports/dashboard'),
-    get('/alertes?nonAcquittees=true')
-  ]);
-
+  c.innerHTML = `<div class="empty"><div class="icon">⏳</div></div>`;
+  const [dash, alertes] = await Promise.all([get('/rapports/dashboard'), get('/alertes?nonAcquittees=true')]);
   const critiques = alertes.filter(a=>a.niveau==='Critique').length;
-  const avert = alertes.filter(a=>a.niveau==='Avertissement').length;
-
   c.innerHTML = `
   <div class="stats-grid">
-    <div class="stat-card teal">
-      <div class="stat-label">Prélèvements totaux</div>
-      <div class="stat-value">${dash.total_prelevements}</div>
-      <div class="stat-sub">${dash.prelevements_ce_mois} ce mois-ci</div>
-    </div>
-    <div class="stat-card blue">
-      <div class="stat-label">Traitements appliqués</div>
-      <div class="stat-value">${dash.traitements_appliques}</div>
-      <div class="stat-sub">Taux conformité : ${dash.taux_conformite}%</div>
-    </div>
-    <div class="stat-card warn">
-      <div class="stat-label">En attente analyse</div>
-      <div class="stat-value">${dash.en_attente}</div>
-      <div class="stat-sub">${dash.prelevements_semaine} cette semaine</div>
-    </div>
-    <div class="stat-card ${critiques>0?'danger':'teal'}">
-      <div class="stat-label">Alertes actives</div>
-      <div class="stat-value">${alertes.length}</div>
-      <div class="stat-sub">${critiques} critique(s), ${avert} avertissement(s)</div>
-    </div>
+    <div class="stat-card teal"><div class="stat-label">Prélèvements totaux</div><div class="stat-value">${dash.total_prelevements}</div><div class="stat-sub">${dash.prelevements_ce_mois} ce mois</div></div>
+    <div class="stat-card blue"><div class="stat-label">Traitements appliqués</div><div class="stat-value">${dash.traitements_appliques}</div><div class="stat-sub">Conformité : ${dash.taux_conformite}%</div></div>
+    <div class="stat-card warn"><div class="stat-label">En attente</div><div class="stat-value">${dash.en_attente}</div><div class="stat-sub">${dash.prelevements_semaine} cette semaine</div></div>
+    <div class="stat-card ${critiques>0?'danger':'teal'}"><div class="stat-label">Alertes actives</div><div class="stat-value">${alertes.length}</div><div class="stat-sub">${critiques} critique(s)</div></div>
   </div>
-
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
     <div class="card">
       <div class="card-title">Alertes récentes</div>
-      ${alertes.length===0
-        ? `<div style="color:var(--text3); font-size:13px; padding:12px 0">✅ Aucune alerte active</div>`
-        : alertes.slice(0,5).map(a=>`
-          <div class="alerte-item ${a.niveau}">
-            <div>
-              <div class="alerte-titre">${a.titre}</div>
-              <div class="alerte-msg">${a.message||''}</div>
-              <div class="alerte-meta">${fmtDate(a.dateCreation)}</div>
-            </div>
-            <span class="badge ${a.niveau==='Critique'?'badge-danger':a.niveau==='Avertissement'?'badge-warn':'badge-info'}">${a.niveau}</span>
-          </div>`).join('')
-      }
-      ${alertes.length>5?`<div style="font-size:12px; color:var(--text3); margin-top:8px; cursor:pointer;" onclick="navigate('alertes')">Voir toutes les alertes →</div>`:''}
+      ${alertes.length===0?`<div style="color:var(--text3);font-size:13px;padding:12px 0">✅ Aucune alerte active</div>`
+        :alertes.slice(0,5).map(a=>`<div class="alerte-item ${a.niveau}">
+          <div><div class="alerte-titre">${a.titre}</div><div class="alerte-msg">${a.message||''}</div><div class="alerte-meta">${fmtDate(a.dateCreation)}</div></div>
+          <span class="badge ${a.niveau==='Critique'?'badge-danger':a.niveau==='Avertissement'?'badge-warn':'badge-info'}">${a.niveau}</span>
+        </div>`).join('')}
     </div>
-
     <div class="card">
       <div class="card-title">Accès rapide</div>
-      <div style="display:flex; flex-direction:column; gap:10px; margin-top:4px;">
-        <button class="btn btn-primary" style="width:100%;" onclick="navigate('prelevements'); setTimeout(()=>openNouveauPrelevement(),100)">
-          🧪 Saisir un nouveau prélèvement
-        </button>
-        <button class="btn btn-secondary" style="width:100%;" onclick="navigate('prelevements')">
-          📋 Voir tous les prélèvements
-        </button>
-        <button class="btn btn-secondary" style="width:100%;" onclick="navigate('rapports')">
-          📈 Rapport d'activité
-        </button>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+        <button class="btn btn-primary" style="width:100%;" onclick="navigate('prelevements');setTimeout(()=>openNouveauPrelevement(),100)">🧪 Nouveau prélèvement</button>
+        <button class="btn btn-secondary" style="width:100%;" onclick="telechargerRapportMensuel()">📄 Rapport mensuel PDF</button>
+        <button class="btn btn-secondary" style="width:100%;" onclick="navigate('alertes')">🔔 Voir toutes les alertes</button>
       </div>
     </div>
   </div>`;
 };
 
 // ══════════════════════════════════════════════════════════════
-//  2. PRELEVEMENTS
+//  PRELEVEMENTS
 // ══════════════════════════════════════════════════════════════
 pages.prelevements = async () => {
   const c = document.getElementById('content');
   c.innerHTML = `<div class="empty"><div class="icon">⏳</div></div>`;
-
   const data = await get('/prelevements?page=1&size=50');
-
   function statutBadge(s) {
-    const map = {
-      EnAttente:'badge-neutral', Analyse:'badge-blue',
-      TraitementRecommande:'badge-warn', Traite:'badge-ok', Rejete:'badge-danger'
-    };
-    const label = {
-      EnAttente:'En attente', Analyse:'Analysé',
-      TraitementRecommande:'Traitement reco.', Traite:'Traité', Rejete:'Rejeté'
-    };
+    const map={EnAttente:'badge-neutral',Analyse:'badge-blue',TraitementRecommande:'badge-warn',Traite:'badge-ok',Rejete:'badge-danger'};
+    const label={EnAttente:'En attente',Analyse:'Analysé',TraitementRecommande:'Traitement reco.',Traite:'Traité',Rejete:'Rejeté'};
     return `<span class="badge ${map[s]||'badge-neutral'}">${label[s]||s}</span>`;
   }
-
   c.innerHTML = `
   <div class="section-header">
     <h3>Prélèvements (${data.total})</h3>
-    <div style="display:flex; gap:10px;">
-      <button class="btn btn-primary" onclick="openNouveauPrelevement()">+ Nouveau prélèvement</button>
-    </div>
+    <button class="btn btn-primary" onclick="openNouveauPrelevement()">+ Nouveau prélèvement</button>
   </div>
-  <div class="card" style="padding:0; overflow:hidden;">
-    <div class="table-wrap">
-    <table>
-      <thead><tr>
-        <th>#</th><th>Date/Heure</th><th>Site</th><th>Technicien</th>
-        <th>pH</th><th>Turbidité (NTU)</th><th>DCO (mg/L)</th>
-        <th>Volume (m³)</th><th>Statut</th><th>Actions</th>
-      </tr></thead>
-      <tbody>
-        ${data.items.length===0
-          ? `<tr><td colspan="10" style="text-align:center; padding:40px; color:var(--text3)">Aucun prélèvement enregistré</td></tr>`
-          : data.items.map(p=>`
-            <tr>
-              <td class="mono">#${p.id}</td>
-              <td class="mono">${fmtDate(p.dateHeure)}</td>
-              <td>${p.pointPrelevement?.nom||'—'}</td>
-              <td>${p.technicien?.prenom||''} ${p.technicien?.nom||'—'}</td>
-              <td class="mono ${p.pH?((p.pH<6.5||p.pH>8.5)?'':''):''}">
-                <span style="color:${p.pH?(p.pH<6.5||p.pH>8.5?'var(--warn)':'var(--ok)'):'var(--text3)'}">${fmt(p.pH)}</span>
-              </td>
-              <td class="mono">
-                <span style="color:${p.turbidite?(p.turbidite>100?'var(--danger)':p.turbidite>5?'var(--warn)':'var(--ok)'):'var(--text3)'}">${fmt(p.turbidite)}</span>
-              </td>
-              <td class="mono">
-                <span style="color:${p.dco?(p.dco>500?'var(--danger)':p.dco>125?'var(--warn)':'var(--ok)'):'var(--text3)'}">${fmt(p.dco,0)}</span>
-              </td>
-              <td class="mono">${fmt(p.volumeTraiter,0)}</td>
-              <td>${statutBadge(p.statut)}</td>
-              <td>
-                <div style="display:flex; gap:4px;">
-                  <button class="btn btn-sm btn-secondary btn-icon" title="Détails" onclick="voirPrelevement(${p.id})">🔍</button>
-                  ${p.statut==='Analyse'||p.statut==='EnAttente'
-                    ? `<button class="btn btn-sm btn-warn btn-icon" title="Aide à la décision" onclick="ouvrirDecision(${p.id})">⚗️</button>` : ''}
-                </div>
-              </td>
-            </tr>`).join('')}
-      </tbody>
-    </table>
-    </div>
-  </div>`;
+  <div class="card" style="padding:0;overflow:hidden;">
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Date</th><th>Site</th><th>Technicien</th><th>pH</th><th>Turbidité</th><th>DCO</th><th>Vol. m³</th><th>Statut</th><th>Actions</th></tr></thead>
+    <tbody>${data.items.length===0?`<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text3)">Aucun prélèvement</td></tr>`
+      :data.items.map(p=>`<tr>
+        <td class="mono">#${p.id}</td>
+        <td class="mono">${fmtDate(p.dateHeure)}</td>
+        <td>${p.pointPrelevement?.nom||'—'}</td>
+        <td>${p.technicien?.prenom||''} ${p.technicien?.nom||'—'}</td>
+        <td class="mono"><span style="color:${p.pH?(p.pH<6.5||p.pH>8.5?'var(--warn)':'var(--ok)'):'var(--text3)'}">${fmt(p.pH)}</span></td>
+        <td class="mono"><span style="color:${p.turbidite?(p.turbidite>100?'var(--danger)':p.turbidite>5?'var(--warn)':'var(--ok)'):'var(--text3)'}">${fmt(p.turbidite)}</span></td>
+        <td class="mono"><span style="color:${p.dco?(p.dco>500?'var(--danger)':p.dco>125?'var(--warn)':'var(--ok)'):'var(--text3)'}">${fmt(p.dco,0)}</span></td>
+        <td class="mono">${fmt(p.volumeTraiter,0)}</td>
+        <td>${statutBadge(p.statut)}</td>
+        <td><div style="display:flex;gap:4px;">
+          <button class="btn btn-sm btn-secondary btn-icon" title="Détails" onclick="voirPrelevement(${p.id})">🔍</button>
+          <button class="btn btn-sm btn-secondary btn-icon" title="PDF" onclick="telechargerPdfPrelevement(${p.id})">📄</button>
+          ${['Analyse','EnAttente'].includes(p.statut)?`<button class="btn btn-sm btn-warn btn-icon" title="Aide à la décision" onclick="ouvrirDecision(${p.id})">⚗️</button>`:''}
+        </div></td>
+      </tr>`).join('')}
+    </tbody>
+  </table></div></div>`;
 };
 
 async function openNouveauPrelevement() {
   const [techs, points] = await Promise.all([get('/techniciens'), get('/pointsprelevement')]);
-
   openModal(`
-    <div class="modal-header">
-      <h3>🧪 Nouveau prélèvement</h3>
-      <button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button>
-    </div>
-
+    <div class="modal-header"><h3>🧪 Nouveau prélèvement</h3><button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button></div>
     <div class="card-title" style="margin-bottom:14px;">Informations générales</div>
     <div class="form-grid cols-2" style="margin-bottom:16px;">
-      <div class="form-group">
-        <label>Site de prélèvement *</label>
-        <select id="f-point">
-          ${points.map(p=>`<option value="${p.id}">${p.nom}</option>`).join('')}
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Technicien *</label>
-        <select id="f-tech">
-          ${techs.filter(t=>t.actif).map(t=>`<option value="${t.id}">${t.prenom} ${t.nom}</option>`).join('')}
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Volume à traiter (m³)</label>
-        <input type="number" id="f-vol" step="0.1" placeholder="ex: 50.0"/>
-      </div>
-      <div class="form-group">
-        <label>Observations</label>
-        <input type="text" id="f-obs" placeholder="Notes optionnelles…"/>
-      </div>
+      <div class="form-group"><label>Site *</label><select id="f-point">${points.map(p=>`<option value="${p.id}">${p.nom}</option>`).join('')}</select></div>
+      <div class="form-group"><label>Technicien *</label><select id="f-tech">${techs.filter(t=>t.actif).map(t=>`<option value="${t.id}">${t.prenom} ${t.nom}</option>`).join('')}</select></div>
+      <div class="form-group"><label>Volume à traiter (m³)</label><input type="number" id="f-vol" step="0.1" placeholder="50.0"/></div>
+      <div class="form-group"><label>Observations</label><input type="text" id="f-obs"/></div>
     </div>
-
     <div class="card-title" style="margin-bottom:14px;">Paramètres physico-chimiques</div>
     <div class="form-grid cols-4">
-      <div class="form-group">
-        <label>pH (0–14)</label>
-        <input type="number" id="f-ph" step="0.1" min="0" max="14" placeholder="7.0"/>
-      </div>
-      <div class="form-group">
-        <label>Turbidité (NTU)</label>
-        <input type="number" id="f-turb" step="0.1" min="0" placeholder="NTU"/>
-      </div>
-      <div class="form-group">
-        <label>Température (°C)</label>
-        <input type="number" id="f-temp" step="0.1" placeholder="°C"/>
-      </div>
-      <div class="form-group">
-        <label>Conductivité (µS/cm)</label>
-        <input type="number" id="f-cond" step="1" placeholder="µS/cm"/>
-      </div>
-      <div class="form-group">
-        <label>O₂ Dissous (mg/L)</label>
-        <input type="number" id="f-o2" step="0.1" placeholder="mg/L"/>
-      </div>
-      <div class="form-group">
-        <label>DCO (mg/L)</label>
-        <input type="number" id="f-dco" step="1" placeholder="mg/L"/>
-      </div>
-      <div class="form-group">
-        <label>DBO5 (mg/L)</label>
-        <input type="number" id="f-dbo" step="1" placeholder="mg/L"/>
-      </div>
-      <div class="form-group">
-        <label>MES (mg/L)</label>
-        <input type="number" id="f-mes" step="1" placeholder="mg/L"/>
-      </div>
-      <div class="form-group">
-        <label>Nitrates mg/L (NO₃)</label>
-        <input type="number" id="f-no3" step="0.1" placeholder="mg/L"/>
-      </div>
-      <div class="form-group">
-        <label>Nitrites mg/L (NO₂)</label>
-        <input type="number" id="f-no2" step="0.01" placeholder="mg/L"/>
-      </div>
-      <div class="form-group">
-        <label>Ammonium mg/L (NH₄)</label>
-        <input type="number" id="f-nh4" step="0.1" placeholder="mg/L"/>
-      </div>
-      <div class="form-group">
-        <label>Phosphore total (mg/L)</label>
-        <input type="number" id="f-phos" step="0.01" placeholder="mg/L"/>
-      </div>
-      <div class="form-group">
-        <label>Coliformes fécaux (UFC/100mL)</label>
-        <input type="number" id="f-coli" step="1" placeholder="UFC/100mL"/>
-      </div>
-      <div class="form-group">
-        <label>Chlore résiduel (mg/L)</label>
-        <input type="number" id="f-cl" step="0.01" placeholder="mg/L"/>
-      </div>
+      <div class="form-group"><label>pH</label><input type="number" id="f-ph" step="0.1" min="0" max="14" placeholder="7.0"/></div>
+      <div class="form-group"><label>Turbidité (NTU)</label><input type="number" id="f-turb" step="0.1"/></div>
+      <div class="form-group"><label>Température (°C)</label><input type="number" id="f-temp" step="0.1"/></div>
+      <div class="form-group"><label>Conductivité (µS/cm)</label><input type="number" id="f-cond"/></div>
+      <div class="form-group"><label>O₂ Dissous (mg/L)</label><input type="number" id="f-o2" step="0.1"/></div>
+      <div class="form-group"><label>DCO (mg/L)</label><input type="number" id="f-dco"/></div>
+      <div class="form-group"><label>DBO5 (mg/L)</label><input type="number" id="f-dbo"/></div>
+      <div class="form-group"><label>MES (mg/L)</label><input type="number" id="f-mes"/></div>
+      <div class="form-group"><label>Nitrates NO₃ (mg/L)</label><input type="number" id="f-no3" step="0.1"/></div>
+      <div class="form-group"><label>Nitrites NO₂ (mg/L)</label><input type="number" id="f-no2" step="0.01"/></div>
+      <div class="form-group"><label>Ammonium NH₄ (mg/L)</label><input type="number" id="f-nh4" step="0.1"/></div>
+      <div class="form-group"><label>Phosphore (mg/L)</label><input type="number" id="f-phos" step="0.01"/></div>
+      <div class="form-group"><label>Coliformes (UFC/100mL)</label><input type="number" id="f-coli"/></div>
+      <div class="form-group"><label>Chlore résiduel (mg/L)</label><input type="number" id="f-cl" step="0.01"/></div>
     </div>
-
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="sauvegarderPrelevement()">💾 Enregistrer le prélèvement</button>
-    </div>
-  `);
+      <button class="btn btn-primary" onclick="sauvegarderPrelevement()">💾 Enregistrer</button>
+    </div>`);
 }
 
 async function sauvegarderPrelevement() {
-  const v = id => { const el=document.getElementById(id); return el?.value?+el.value:null; };
-  const s = id => document.getElementById(id)?.value||null;
-
-  const payload = {
-    pointPrelevementId: +document.getElementById('f-point').value,
-    technicienId:       +document.getElementById('f-tech').value,
-    volumeTraiter:      v('f-vol'),
-    observations:       s('f-obs'),
-    pH: v('f-ph'), turbidite: v('f-turb'), temperature: v('f-temp'),
-    conductivite: v('f-cond'), oxygeneDissous: v('f-o2'),
-    dCO: v('f-dco'), dBO5: v('f-dbo'), mES: v('f-mes'),
-    nitrates: v('f-no3'), nitrites: v('f-no2'), ammonium: v('f-nh4'),
-    phosphore: v('f-phos'), coliformesFecaux: v('f-coli'), chloreTotalResiduel: v('f-cl')
+  const v=id=>{const el=document.getElementById(id);return el?.value?+el.value:null;};
+  const s=id=>document.getElementById(id)?.value||null;
+  const payload={
+    pointPrelevementId:+document.getElementById('f-point').value,
+    technicienId:+document.getElementById('f-tech').value,
+    volumeTraiter:v('f-vol'),observations:s('f-obs'),
+    pH:v('f-ph'),turbidite:v('f-turb'),temperature:v('f-temp'),conductivite:v('f-cond'),oxygeneDissous:v('f-o2'),
+    dCO:v('f-dco'),dBO5:v('f-dbo'),mES:v('f-mes'),nitrates:v('f-no3'),nitrites:v('f-no2'),
+    ammonium:v('f-nh4'),phosphore:v('f-phos'),coliformesFecaux:v('f-coli'),chloreTotalResiduel:v('f-cl')
   };
-
   try {
     const res = await post('/prelevements', payload);
-    if (res.id) {
-      closeModal();
-      toast(`Prélèvement #${res.id} enregistré avec succès`, 'ok');
-      pages.prelevements();
-      refreshAlerteBadge();
-
-      // Proposer immédiatement l'aide à la décision
-      setTimeout(()=> {
-        if(confirm(`Prélèvement #${res.id} enregistré.\n\nVoulez-vous générer la recommandation de traitement maintenant ?`))
-          ouvrirDecision(res.id);
-      }, 500);
+    if(res.id) {
+      closeModal(); toast(`Prélèvement #${res.id} enregistré`, 'ok');
+      pages.prelevements(); refreshAlerteBadge();
+      setTimeout(()=>{ if(confirm(`Prélèvement #${res.id} enregistré.\nGénérer la recommandation de traitement maintenant ?`)) ouvrirDecision(res.id); },500);
     }
-  } catch(e) { toast('Erreur lors de l\'enregistrement', 'error'); }
+  } catch(e) { toast('Erreur lors de l\'enregistrement','error'); }
 }
 
 async function voirPrelevement(id) {
   const p = await get(`/prelevements/${id}`);
-
-  function paramItem(nom, val, unit, min, max) {
-    let cls = 'param-neutral';
-    if(val!=null) {
-      if((min!=null&&val<min)||(max!=null&&val>max)) cls = val<(min||0)*0.7||val>(max||99)*1.5?'param-danger':'param-warn';
-      else cls = 'param-ok';
-    }
-    return `<div class="param-item ${cls}">
-      <div class="param-name">${nom}</div>
-      <div class="param-value">${fmt(val,2)}</div>
-      <div class="param-unit">${unit}</div>
-    </div>`;
+  function paramItem(nom,val,unit,min,max) {
+    let cls='param-neutral';
+    if(val!=null){if((min!=null&&val<min)||(max!=null&&val>max))cls=val<(min||0)*0.7||val>(max||99)*1.5?'param-danger':'param-warn';else cls='param-ok';}
+    return `<div class="param-item ${cls}"><div class="param-name">${nom}</div><div class="param-value">${fmt(val,2)}</div><div class="param-unit">${unit}</div></div>`;
   }
-
   openModal(`
-    <div class="modal-header">
-      <h3>🔍 Prélèvement #${p.id} — ${p.pointPrelevement?.nom||'?'}</h3>
-      <button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button>
-    </div>
-    <div style="display:flex; gap:16px; margin-bottom:16px; font-size:13px; color:var(--text2);">
-      <span>📅 ${fmtDate(p.dateHeure)}</span>
-      <span>👤 ${p.technicien?.prenom||''} ${p.technicien?.nom||''}</span>
-      <span>📦 ${fmt(p.volumeTraiter,0)} m³</span>
+    <div class="modal-header"><h3>🔍 Prélèvement #${p.id} — ${p.pointPrelevement?.nom||'?'}</h3><button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button></div>
+    <div style="display:flex;gap:16px;margin-bottom:16px;font-size:13px;color:var(--text2);">
+      <span>📅 ${fmtDate(p.dateHeure)}</span><span>👤 ${p.technicien?.prenom||''} ${p.technicien?.nom||''}</span><span>📦 ${fmt(p.volumeTraiter,0)} m³</span>
     </div>
     <div class="card-title">Paramètres mesurés</div>
-    <div class="param-grid" style="margin: 12px 0 20px;">
-      ${paramItem('pH', p.pH, '', 6.5, 8.5)}
-      ${paramItem('Turbidité', p.turbidite, 'NTU', null, 5)}
-      ${paramItem('Température', p.temperature, '°C', null, null)}
-      ${paramItem('O₂ Dissous', p.oxygeneDissous, 'mg/L', 2, null)}
-      ${paramItem('DCO', p.dCO, 'mg/L', null, 125)}
-      ${paramItem('DBO5', p.dBO5, 'mg/L', null, 25)}
-      ${paramItem('MES', p.mES, 'mg/L', null, 35)}
-      ${paramItem('Nitrates', p.nitrates, 'mg/L', null, 50)}
-      ${paramItem('Ammonium', p.ammonium, 'mg/L', null, 10)}
-      ${paramItem('Phosphore', p.phosphore, 'mg/L', null, 2)}
-      ${paramItem('Coliformes', p.coliformesFecaux, 'UFC/100mL', null, 1000)}
-      ${paramItem('Chlore', p.chloreTotalResiduel, 'mg/L', 0.2, 0.5)}
+    <div class="param-grid" style="margin:12px 0 20px;">
+      ${paramItem('pH',p.pH,'',6.5,8.5)}${paramItem('Turbidité',p.turbidite,'NTU',null,5)}
+      ${paramItem('Temp.',p.temperature,'°C',null,null)}${paramItem('O₂ Dissous',p.oxygeneDissous,'mg/L',2,null)}
+      ${paramItem('DCO',p.dCO,'mg/L',null,125)}${paramItem('DBO5',p.dBO5,'mg/L',null,25)}
+      ${paramItem('MES',p.mES,'mg/L',null,35)}${paramItem('Nitrates',p.nitrates,'mg/L',null,50)}
+      ${paramItem('Ammonium',p.ammonium,'mg/L',null,10)}${paramItem('Phosphore',p.phosphore,'mg/L',null,2)}
+      ${paramItem('Coliformes',p.coliformesFecaux,'UFC/100mL',null,1000)}${paramItem('Chlore',p.chloreTotalResiduel,'mg/L',0.2,0.5)}
     </div>
-    ${p.observations?`<div style="font-size:13px; color:var(--text2); margin-bottom:16px;">📝 ${p.observations}</div>`:''}
-    ${p.traitement?`
-      <div class="sep"></div>
-      <div class="card-title">Traitement appliqué</div>
-      <div class="doses-grid">
-        ${p.traitement.doseChloreMgL?`<div class="dose-item"><div class="dose-produit">Chlore</div><div class="dose-valeur">${fmt(p.traitement.doseChloreMgL,2)}</div><div class="dose-unit">mg/L → ${fmt(p.traitement.doseChloreTotaleKg,3)} kg</div></div>`:''}
-        ${p.traitement.doseCoagulantMgL?`<div class="dose-item"><div class="dose-produit">Coagulant</div><div class="dose-valeur">${fmt(p.traitement.doseCoagulantMgL,1)}</div><div class="dose-unit">mg/L → ${fmt(p.traitement.doseCoagulantTotaleKg,2)} kg</div></div>`:''}
-        ${p.traitement.doseFloquantMgL?`<div class="dose-item"><div class="dose-produit">Floquant</div><div class="dose-valeur">${fmt(p.traitement.doseFloquantMgL,2)}</div><div class="dose-unit">mg/L → ${fmt(p.traitement.doseFloquantTotaleKg,3)} kg</div></div>`:''}
-      </div>` : ''}
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
-      ${['Analyse','EnAttente'].includes(p.statut)?`<button class="btn btn-primary" onclick="closeModal(); ouvrirDecision(${p.id})">⚗️ Aide à la décision</button>`:''}
-    </div>
-  `);
+      <button class="btn btn-secondary" onclick="telechargerPdfPrelevement(${p.id})">📄 Télécharger PDF</button>
+      ${['Analyse','EnAttente'].includes(p.statut)?`<button class="btn btn-primary" onclick="closeModal();ouvrirDecision(${p.id})">⚗️ Aide à la décision</button>`:''}
+    </div>`);
 }
 
 // ══════════════════════════════════════════════════════════════
-//  3. AIDE À LA DÉCISION / TRAITEMENT
+//  AIDE À LA DÉCISION
 // ══════════════════════════════════════════════════════════════
 async function ouvrirDecision(prelevementId) {
-  openModal(`<div style="text-align:center; padding:40px; color:var(--text2);">⏳ Calcul de la recommandation…</div>`);
-
-  const [p, reco, techs] = await Promise.all([
-    get(`/prelevements/${prelevementId}`),
-    get(`/traitements/recommandation/${prelevementId}`),
-    get('/techniciens')
-  ]);
-
-  const scoreColor = reco.scoreQualite>=80?'score-ok':reco.scoreQualite>=50?'score-warn':'score-danger';
-  const decisionLabel = {
-    TraitementStandard:'Traitement standard',
-    TraitementRenforce:'Traitement renforcé',
-    TraitementUrgence:'🚨 TRAITEMENT URGENT',
-    RejetRejection:'⛔ Rejet/Retraitement',
-    NouveauPrelevement:'Nouveau prélèvement requis'
-  };
-
+  openModal(`<div style="text-align:center;padding:40px;color:var(--text2);">⏳ Calcul de la recommandation…</div>`);
+  const [p, reco, techs] = await Promise.all([get(`/prelevements/${prelevementId}`),get(`/traitements/recommandation/${prelevementId}`),get('/techniciens')]);
+  const scoreColor=reco.scoreQualite>=80?'score-ok':reco.scoreQualite>=50?'score-warn':'score-danger';
+  const decisionLabel={TraitementStandard:'Traitement standard',TraitementRenforce:'Traitement renforcé',TraitementUrgence:'🚨 TRAITEMENT URGENT',RejetRejection:'⛔ Rejet',NouveauPrelevement:'Nouveau prélèvement'};
   openModal(`
-    <div class="modal-header">
-      <h3>⚗️ Aide à la décision — Prélèvement #${prelevementId}</h3>
-      <button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button>
-    </div>
-
+    <div class="modal-header"><h3>⚗️ Aide à la décision — Prélèvement #${prelevementId}</h3><button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button></div>
     <div class="reco-box">
       <div class="reco-header">
         <div>
-          <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; font-family:var(--mono); margin-bottom:6px;">Score qualité de l'eau</div>
-          <div class="reco-score ${scoreColor}">${reco.scoreQualite}<span style="font-size:16px; opacity:.5;">/100</span></div>
-          <div style="font-size:12px; color:var(--text2); margin-top:4px;">Risque : <strong style="color:${reco.niveauRisque==='Faible'?'var(--ok)':reco.niveauRisque==='Critique'?'var(--danger)':'var(--warn)'}">${reco.niveauRisque}</strong></div>
+          <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-family:var(--mono);margin-bottom:6px;">Score qualité</div>
+          <div class="reco-score ${scoreColor}">${reco.scoreQualite}<span style="font-size:16px;opacity:.5;">/100</span></div>
+          <div style="font-size:12px;color:var(--text2);margin-top:4px;">Risque : <strong style="color:${reco.niveauRisque==='Faible'?'var(--ok)':reco.niveauRisque==='Critique'?'var(--danger)':'var(--warn)'}">${reco.niveauRisque}</strong></div>
         </div>
         <div style="text-align:right;">
-          <div style="font-size:11px; color:var(--text3); margin-bottom:4px;">DÉCISION SUGGÉRÉE</div>
-          <div style="font-size:14px; font-weight:700; color:${reco.decisionSuggere==='TraitementUrgence'?'var(--danger)':reco.decisionSuggere==='RejetRejection'?'var(--danger)':'var(--accent)'}">
-            ${decisionLabel[reco.decisionSuggere]||reco.decisionSuggere}
-          </div>
-          <div style="font-size:11px; color:var(--text3); margin-top:4px;">Volume : ${fmt(p.volumeTraiter,0)||'N/A'} m³</div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">DÉCISION SUGGÉRÉE</div>
+          <div style="font-size:14px;font-weight:700;color:${reco.decisionSuggere==='TraitementUrgence'||reco.decisionSuggere==='RejetRejection'?'var(--danger)':'var(--accent)'}">
+            ${decisionLabel[reco.decisionSuggere]||reco.decisionSuggere}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px;">Volume : ${fmt(p.volumeTraiter,0)||'N/A'} m³</div>
         </div>
       </div>
-
       ${(reco.doseChloreMgL||reco.doseCoagulantMgL||reco.doseFloquantMgL||reco.doseChaux||reco.doseAcide)?`
       <div class="card-title" style="margin:12px 0 8px;">Doses recommandées</div>
       <div class="doses-grid">
-        ${reco.doseChloreMgL?`<div class="dose-item">
-          <div class="dose-produit">Chlore (Cl₂ / eau de javel)</div>
-          <div class="dose-valeur">${fmt(reco.doseChloreMgL,2)}</div>
-          <div class="dose-unit">mg/L → <strong>${fmt(reco.doseChloreTotaleKg,3)} kg</strong> total</div>
-        </div>`:''}
-        ${reco.doseCoagulantMgL?`<div class="dose-item">
-          <div class="dose-produit">Coagulant (Al₂(SO₄)₃ / FeCl₃)</div>
-          <div class="dose-valeur">${fmt(reco.doseCoagulantMgL,1)}</div>
-          <div class="dose-unit">mg/L → <strong>${fmt(reco.doseCoagulantTotaleKg,2)} kg</strong> total</div>
-        </div>`:''}
-        ${reco.doseFloquantMgL?`<div class="dose-item">
-          <div class="dose-produit">Floquant (polymère)</div>
-          <div class="dose-valeur">${fmt(reco.doseFloquantMgL,2)}</div>
-          <div class="dose-unit">mg/L → <strong>${fmt(reco.doseFloquantTotaleKg,3)} kg</strong> total</div>
-        </div>`:''}
-        ${reco.doseChaux?`<div class="dose-item">
-          <div class="dose-produit">Chaux vive Ca(OH)₂</div>
-          <div class="dose-valeur">${fmt(reco.doseChaux,2)}</div>
-          <div class="dose-unit">kg total (correction pH)</div>
-        </div>`:''}
-        ${reco.doseAcide?`<div class="dose-item">
-          <div class="dose-produit">Acide HCl 33%</div>
-          <div class="dose-valeur">${fmt(reco.doseAcide,2)}</div>
-          <div class="dose-unit">L total (correction pH)</div>
-        </div>`:''}
+        ${reco.doseChloreMgL?`<div class="dose-item"><div class="dose-produit">Chlore</div><div class="dose-valeur">${fmt(reco.doseChloreMgL,2)}</div><div class="dose-unit">mg/L → <strong>${fmt(reco.doseChloreTotaleKg,3)} kg</strong></div></div>`:''}
+        ${reco.doseCoagulantMgL?`<div class="dose-item"><div class="dose-produit">Coagulant</div><div class="dose-valeur">${fmt(reco.doseCoagulantMgL,1)}</div><div class="dose-unit">mg/L → <strong>${fmt(reco.doseCoagulantTotaleKg,2)} kg</strong></div></div>`:''}
+        ${reco.doseFloquantMgL?`<div class="dose-item"><div class="dose-produit">Floquant</div><div class="dose-valeur">${fmt(reco.doseFloquantMgL,2)}</div><div class="dose-unit">mg/L → <strong>${fmt(reco.doseFloquantTotaleKg,3)} kg</strong></div></div>`:''}
+        ${reco.doseChaux?`<div class="dose-item"><div class="dose-produit">Chaux Ca(OH)₂</div><div class="dose-valeur">${fmt(reco.doseChaux,2)}</div><div class="dose-unit">kg total</div></div>`:''}
+        ${reco.doseAcide?`<div class="dose-item"><div class="dose-produit">Acide HCl</div><div class="dose-valeur">${fmt(reco.doseAcide,2)}</div><div class="dose-unit">L total</div></div>`:''}
       </div>`:''}
-
       <div class="card-title" style="margin:12px 0 8px;">Actions recommandées</div>
-      <ul class="reco-actions">
-        ${reco.actionsRecommandees.map(a=>`<li><span>→</span><span>${a}</span></li>`).join('')}
-      </ul>
+      <ul class="reco-actions">${reco.actionsRecommandees.map(a=>`<li><span>→</span><span>${a}</span></li>`).join('')}</ul>
     </div>
-
     <div class="sep"></div>
-    <div class="card-title" style="margin-bottom:12px;">Valider & enregistrer le traitement</div>
+    <div class="card-title" style="margin-bottom:12px;">Valider le traitement</div>
     <div class="form-grid cols-2">
-      <div class="form-group">
-        <label>Technicien responsable</label>
-        <select id="d-tech">
-          ${techs.filter(t=>t.actif).map(t=>`<option value="${t.id}">${t.prenom} ${t.nom}</option>`).join('')}
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Décision finale</label>
-        <select id="d-decision">
-          ${Object.entries(decisionLabel).map(([k,v])=>`<option value="${k}" ${k===reco.decisionSuggere?'selected':''}>${v}</option>`).join('')}
-        </select>
-      </div>
-      <div class="form-group full">
-        <label>Notes opérateur</label>
-        <textarea id="d-notes" rows="2" placeholder="Observations, ajustements…">${reco.justification}</textarea>
-      </div>
+      <div class="form-group"><label>Technicien</label><select id="d-tech">${techs.filter(t=>t.actif).map(t=>`<option value="${t.id}">${t.prenom} ${t.nom}</option>`).join('')}</select></div>
+      <div class="form-group"><label>Décision finale</label><select id="d-decision">${Object.entries(decisionLabel).map(([k,v])=>`<option value="${k}" ${k===reco.decisionSuggere?'selected':''}>${v}</option>`).join('')}</select></div>
+      <div class="form-group full"><label>Notes opérateur</label><textarea id="d-notes" rows="2">${reco.justification}</textarea></div>
     </div>
-
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="enregistrerTraitement(${prelevementId}, ${JSON.stringify(reco).replace(/"/g,'&quot;')})">
-        ✅ Enregistrer le traitement
-      </button>
-    </div>
-  `);
+      <button class="btn btn-primary" onclick="enregistrerTraitement(${prelevementId},${JSON.stringify(reco).replace(/"/g,'&quot;')})">✅ Enregistrer le traitement</button>
+    </div>`);
 }
 
 async function enregistrerTraitement(prelevementId, reco) {
-  const payload = {
-    prelevementId,
-    technicienId: +document.getElementById('d-tech').value,
-    decision: document.getElementById('d-decision').value,
-    notesOperateur: document.getElementById('d-notes').value,
-    doseChloreMgL:         reco.doseChloreMgL,
-    doseChloreTotaleKg:    reco.doseChloreTotaleKg,
-    doseCoagulantMgL:      reco.doseCoagulantMgL,
-    doseCoagulantTotaleKg: reco.doseCoagulantTotaleKg,
-    doseFloquantMgL:       reco.doseFloquantMgL,
-    doseFloquantTotaleKg:  reco.doseFloquantTotaleKg,
-    doseChaux:             reco.doseChaux,
-    doseAcide:             reco.doseAcide,
-    justification:         reco.justification
-  };
-  try {
-    await post('/traitements', payload);
-    closeModal();
-    toast('Traitement enregistré avec succès', 'ok');
-    pages.prelevements();
-  } catch(e) { toast('Erreur lors de l\'enregistrement', 'error'); }
+  const payload={prelevementId,technicienId:+document.getElementById('d-tech').value,
+    decision:document.getElementById('d-decision').value,notesOperateur:document.getElementById('d-notes').value,
+    doseChloreMgL:reco.doseChloreMgL,doseChloreTotaleKg:reco.doseChloreTotaleKg,
+    doseCoagulantMgL:reco.doseCoagulantMgL,doseCoagulantTotaleKg:reco.doseCoagulantTotaleKg,
+    doseFloquantMgL:reco.doseFloquantMgL,doseFloquantTotaleKg:reco.doseFloquantTotaleKg,
+    doseChaux:reco.doseChaux,doseAcide:reco.doseAcide,justification:reco.justification};
+  await post('/traitements',payload);
+  closeModal(); toast('Traitement enregistré','ok'); pages.prelevements();
 }
 
 // ══════════════════════════════════════════════════════════════
-//  4. TRAITEMENTS
+//  TRAITEMENTS
 // ══════════════════════════════════════════════════════════════
 pages.traitements = async () => {
   const c = document.getElementById('content');
   c.innerHTML = `<div class="empty"><div class="icon">⏳</div></div>`;
   const data = await get('/traitements');
-
-  const decLabel = {
-    TraitementStandard:'Standard', TraitementRenforce:'Renforcé',
-    TraitementUrgence:'Urgent', RejetRejection:'Rejet', NouveauPrelevement:'Nouveau prél.'
-  };
-  const decBadge = {
-    TraitementStandard:'badge-info', TraitementRenforce:'badge-warn',
-    TraitementUrgence:'badge-danger', RejetRejection:'badge-danger', NouveauPrelevement:'badge-neutral'
-  };
-
-  c.innerHTML = `
-  <div class="section-header">
-    <h3>Historique des traitements (${data.length})</h3>
-  </div>
-  <div class="card" style="padding:0; overflow:hidden;">
-    <div class="table-wrap">
-    <table>
-      <thead><tr>
-        <th>#</th><th>Date</th><th>Prélèvement</th><th>Décision</th>
-        <th>Chlore (mg/L)</th><th>Coagulant (mg/L)</th><th>Technicien</th>
-        <th>Appliqué</th><th>Conforme</th><th></th>
-      </tr></thead>
-      <tbody>
-        ${data.length===0
-          ? `<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text3)">Aucun traitement</td></tr>`
-          : data.map(t=>`
-            <tr>
-              <td class="mono">#${t.id}</td>
-              <td class="mono">${fmtDate2(t.dateTraitement)}</td>
-              <td class="mono">#${t.prelevementId} — ${t.prelevement?.pointPrelevement?.nom||'?'}</td>
-              <td><span class="badge ${decBadge[t.decision]||'badge-neutral'}">${decLabel[t.decision]||t.decision}</span></td>
-              <td class="mono">${fmt(t.doseChloreMgL,2)}</td>
-              <td class="mono">${fmt(t.doseCoagulantMgL,1)}</td>
-              <td>${t.technicien?.prenom||''} ${t.technicien?.nom||''}</td>
-              <td>${t.applique?'<span class="badge badge-ok">✓ Oui</span>':'<span class="badge badge-neutral">Non</span>'}</td>
-              <td>${t.conformeNormes===true?'<span class="badge badge-ok">✓</span>':t.conformeNormes===false?'<span class="badge badge-danger">✗</span>':'<span class="badge badge-neutral">—</span>'}</td>
-              <td>${!t.applique?`<button class="btn btn-sm btn-primary" onclick="ouvrirApplication(${t.id})">Appliquer</button>`:'<button class="btn btn-sm btn-secondary" onclick="voirResultat(${t.id})">Résultat</button>'}</td>
-            </tr>`).join('')}
-      </tbody>
-    </table>
-    </div>
-  </div>`;
+  const decLabel={TraitementStandard:'Standard',TraitementRenforce:'Renforcé',TraitementUrgence:'Urgent',RejetRejection:'Rejet',NouveauPrelevement:'Nouveau prél.'};
+  const decBadge={TraitementStandard:'badge-info',TraitementRenforce:'badge-warn',TraitementUrgence:'badge-danger',RejetRejection:'badge-danger',NouveauPrelevement:'badge-neutral'};
+  c.innerHTML=`
+  <div class="section-header"><h3>Historique traitements (${data.length})</h3></div>
+  <div class="card" style="padding:0;overflow:hidden;"><div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Date</th><th>Prélèvement</th><th>Décision</th><th>Chlore mg/L</th><th>Coagulant mg/L</th><th>Technicien</th><th>Appliqué</th><th>Conforme</th><th></th></tr></thead>
+    <tbody>${data.length===0?`<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text3)">Aucun traitement</td></tr>`
+      :data.map(t=>`<tr>
+        <td class="mono">#${t.id}</td><td class="mono">${fmtDate2(t.dateTraitement)}</td>
+        <td class="mono">#${t.prelevementId} ${t.prelevement?.pointPrelevement?.nom?'— '+t.prelevement.pointPrelevement.nom:''}</td>
+        <td><span class="badge ${decBadge[t.decision]||'badge-neutral'}">${decLabel[t.decision]||t.decision}</span></td>
+        <td class="mono">${fmt(t.doseChloreMgL,2)}</td><td class="mono">${fmt(t.doseCoagulantMgL,1)}</td>
+        <td>${t.technicien?.prenom||''} ${t.technicien?.nom||''}</td>
+        <td>${t.applique?'<span class="badge badge-ok">✓</span>':'<span class="badge badge-neutral">Non</span>'}</td>
+        <td>${t.conformeNormes===true?'<span class="badge badge-ok">✓</span>':t.conformeNormes===false?'<span class="badge badge-danger">✗</span>':'—'}</td>
+        <td>${!t.applique?`<button class="btn btn-sm btn-primary" onclick="ouvrirApplication(${t.id})">Appliquer</button>`:''}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table></div></div>`;
 };
 
-async function ouvrirApplication(traitementId) {
+async function ouvrirApplication(id) {
   openModal(`
-    <div class="modal-header">
-      <h3>✅ Confirmer l'application du traitement #${traitementId}</h3>
-      <button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button>
-    </div>
-    <div class="card-title" style="margin-bottom:12px;">Mesures post-traitement</div>
+    <div class="modal-header"><h3>✅ Confirmer application traitement #${id}</h3><button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button></div>
     <div class="form-grid">
-      <div class="form-group">
-        <label>pH final mesuré</label>
-        <input type="number" id="r-ph" step="0.1" min="0" max="14" placeholder="7.0"/>
-      </div>
-      <div class="form-group">
-        <label>Turbidité finale (NTU)</label>
-        <input type="number" id="r-turb" step="0.1" placeholder="NTU"/>
-      </div>
-      <div class="form-group">
-        <label>Chlore résiduel final (mg/L)</label>
-        <input type="number" id="r-cl" step="0.01" placeholder="mg/L"/>
-      </div>
-      <div class="form-group">
-        <label>Eau conforme aux normes ?</label>
-        <select id="r-conf">
-          <option value="">— Sélectionner</option>
-          <option value="true">✅ Oui — conforme</option>
-          <option value="false">❌ Non — non conforme</option>
-        </select>
-      </div>
-      <div class="form-group full">
-        <label>Notes opérateur</label>
-        <textarea id="r-notes" rows="2" placeholder="Observations post-traitement…"></textarea>
-      </div>
+      <div class="form-group"><label>pH final</label><input type="number" id="r-ph" step="0.1"/></div>
+      <div class="form-group"><label>Turbidité finale (NTU)</label><input type="number" id="r-turb" step="0.1"/></div>
+      <div class="form-group"><label>Chlore résiduel (mg/L)</label><input type="number" id="r-cl" step="0.01"/></div>
+      <div class="form-group"><label>Eau conforme ?</label><select id="r-conf"><option value="">—</option><option value="true">✅ Conforme</option><option value="false">❌ Non conforme</option></select></div>
+      <div class="form-group full"><label>Notes</label><textarea id="r-notes" rows="2"></textarea></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="confirmerApplication(${traitementId})">✅ Confirmer l'application</button>
-    </div>
-  `);
+      <button class="btn btn-primary" onclick="confirmerApplication(${id})">✅ Confirmer</button>
+    </div>`);
 }
-
 async function confirmerApplication(id) {
-  const payload = {
-    pHFinal:       document.getElementById('r-ph').value?+document.getElementById('r-ph').value:null,
+  await put(`/traitements/${id}/appliquer`,{
+    pHFinal:document.getElementById('r-ph').value?+document.getElementById('r-ph').value:null,
     turbiditeFinal:document.getElementById('r-turb').value?+document.getElementById('r-turb').value:null,
-    chloreFinal:   document.getElementById('r-cl').value?+document.getElementById('r-cl').value:null,
+    chloreFinal:document.getElementById('r-cl').value?+document.getElementById('r-cl').value:null,
     conformeNormes:document.getElementById('r-conf').value===''?null:document.getElementById('r-conf').value==='true',
-    notes:         document.getElementById('r-notes').value||null
-  };
-  await put(`/traitements/${id}/appliquer`, payload);
-  closeModal();
-  toast('Application confirmée', 'ok');
-  pages.traitements();
+    notes:document.getElementById('r-notes').value||null
+  });
+  closeModal(); toast('Application confirmée','ok'); pages.traitements();
 }
 
 // ══════════════════════════════════════════════════════════════
-//  5. ALERTES
+//  ALERTES
 // ══════════════════════════════════════════════════════════════
 pages.alertes = async () => {
   const c = document.getElementById('content');
-  c.innerHTML = `<div class="empty"><div class="icon">⏳</div></div>`;
   const alertes = await get('/alertes');
-
-  const actives  = alertes.filter(a=>!a.acquittee);
-  const passees  = alertes.filter(a=>a.acquittee);
-
-  c.innerHTML = `
+  const actives=alertes.filter(a=>!a.acquittee), passees=alertes.filter(a=>a.acquittee);
+  function renderAlerte(a,showAcq) {
+    return `<div class="alerte-item ${a.niveau}">
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <span class="badge ${a.niveau==='Critique'?'badge-danger':a.niveau==='Avertissement'?'badge-warn':'badge-info'}">${a.niveau}</span>
+          <span class="alerte-titre">${a.titre}</span>
+        </div>
+        <div class="alerte-msg">${a.message||''}</div>
+        <div class="alerte-meta">Prélèvement #${a.prelevementId||'?'} · ${fmtDate(a.dateCreation)}${a.valeurMesuree!=null?` · Valeur : ${fmt(a.valeurMesuree,2)}`:''}</div>
+      </div>
+      ${showAcq?`<button class="btn btn-sm btn-secondary" onclick="acquitterAlerte(${a.id})">Acquitter</button>`:''}
+    </div>`;
+  }
+  c.innerHTML=`
   <div class="tabs">
     <div class="tab active" id="tab-act" onclick="switchTab('act')">Actives (${actives.length})</div>
     <div class="tab" id="tab-pass" onclick="switchTab('pass')">Acquittées (${passees.length})</div>
   </div>
-  <div id="alertes-act">
-    ${actives.length===0
-      ? `<div class="empty"><div class="icon">✅</div><p>Aucune alerte active — tout est normal</p></div>`
-      : actives.map(a=>renderAlerte(a, true)).join('')}
-  </div>
-  <div id="alertes-pass" style="display:none;">
-    ${passees.map(a=>renderAlerte(a, false)).join('')}
-  </div>`;
+  <div id="alertes-act">${actives.length===0?`<div class="empty"><div class="icon">✅</div><p>Aucune alerte active</p></div>`:actives.map(a=>renderAlerte(a,true)).join('')}</div>
+  <div id="alertes-pass" style="display:none;">${passees.map(a=>renderAlerte(a,false)).join('')}</div>`;
 };
-
-function renderAlerte(a, showAcquitter) {
-  return `
-  <div class="alerte-item ${a.niveau}" id="alerte-${a.id}">
-    <div style="flex:1;">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-        <span class="badge ${a.niveau==='Critique'?'badge-danger':a.niveau==='Avertissement'?'badge-warn':'badge-info'}">${a.niveau}</span>
-        <span class="alerte-titre">${a.titre}</span>
-      </div>
-      <div class="alerte-msg">${a.message||''}</div>
-      <div class="alerte-meta">
-        Prélèvement #${a.prelevementId||'?'} · ${fmtDate(a.dateCreation)}
-        ${a.valeurMesuree!=null?` · Valeur : <strong>${fmt(a.valeurMesuree,2)}</strong>`:'' }
-        ${a.seuilMaximum!=null?` · Max : ${a.seuilMaximum}`:''}
-        ${a.seuilMinimum!=null?` · Min : ${a.seuilMinimum}`:''}
-      </div>
-    </div>
-    ${showAcquitter?`<button class="btn btn-sm btn-secondary" onclick="acquitterAlerte(${a.id})">Acquitter</button>`:''}
-  </div>`;
-}
-
 function switchTab(t) {
-  document.getElementById('tab-act').classList.toggle('active', t==='act');
-  document.getElementById('tab-pass').classList.toggle('active', t==='pass');
-  document.getElementById('alertes-act').style.display = t==='act'?'':'none';
-  document.getElementById('alertes-pass').style.display = t==='pass'?'':'none';
+  document.getElementById('tab-act').classList.toggle('active',t==='act');
+  document.getElementById('tab-pass').classList.toggle('active',t==='pass');
+  document.getElementById('alertes-act').style.display=t==='act'?'':'none';
+  document.getElementById('alertes-pass').style.display=t==='pass'?'':'none';
 }
-
-async function acquitterAlerte(id) {
-  await put(`/alertes/${id}/acquitter`, {});
-  toast('Alerte acquittée', 'ok');
-  pages.alertes();
-  refreshAlerteBadge();
-}
-
+async function acquitterAlerte(id) { await put(`/alertes/${id}/acquitter`,{}); toast('Alerte acquittée','ok'); pages.alertes(); refreshAlerteBadge(); }
 async function refreshAlerteBadge() {
-  const alertes = await get('/alertes?nonAcquittees=true');
-  const badge = document.getElementById('badge-alertes');
-  const n = alertes.filter(a=>a.niveau==='Critique').length;
-  badge.textContent = alertes.length;
-  badge.classList.toggle('show', alertes.length > 0);
+  try {
+    const a=await get('/alertes?nonAcquittees=true');
+    const b=document.getElementById('badge-alertes');
+    b.textContent=a.length; b.classList.toggle('show',a.length>0);
+  } catch(e){}
 }
 
 // ══════════════════════════════════════════════════════════════
-//  6. RAPPORTS
+//  RAPPORTS + PDF
 // ══════════════════════════════════════════════════════════════
 pages.rapports = async () => {
   const c = document.getElementById('content');
   c.innerHTML = `<div class="empty"><div class="icon">⏳</div></div>`;
-
-  const [dash, evol] = await Promise.all([
-    get('/rapports/dashboard'),
-    get('/rapports/evolution?jours=30')
-  ]);
-
-  // Build mini charts
-  function miniChart(data, key, color) {
-    if(!data.length) return '<div class="mini-chart"><div style="color:var(--text3);font-size:11px;">Pas de données</div></div>';
-    const vals = data.map(d=>d[key]).filter(v=>v!=null);
-    if(!vals.length) return '<div class="mini-chart"></div>';
-    const max = Math.max(...vals);
-    return `<div class="mini-chart">${data.map(d=>`
-      <div class="bar" style="height:${d[key]?Math.max(4,(d[key]/max)*100):4}%; background:${color};" title="${d.date}: ${fmt(d[key],1)}"></div>
-    `).join('')}</div>`;
+  const [dash, evol] = await Promise.all([get('/rapports/dashboard'),get('/rapports/evolution?jours=30')]);
+  function miniChart(data,key,color) {
+    const vals=data.map(d=>d[key]).filter(v=>v!=null);
+    if(!vals.length) return '<div class="mini-chart" style="align-items:center;"><span style="color:var(--text3);font-size:11px;">Pas de données</span></div>';
+    const max=Math.max(...vals);
+    return `<div class="mini-chart">${data.map(d=>`<div class="bar" style="height:${d[key]?Math.max(4,(d[key]/max)*100):4}%;background:${color};" title="${d.date}: ${fmt(d[key],1)}"></div>`).join('')}</div>`;
   }
-
-  c.innerHTML = `
-  <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
-    <div class="stat-card teal">
-      <div class="stat-label">Ce mois</div>
-      <div class="stat-value">${dash.prelevements_ce_mois}</div>
-      <div class="stat-sub">prélèvements</div>
-    </div>
-    <div class="stat-card blue">
-      <div class="stat-label">Taux conformité</div>
-      <div class="stat-value">${dash.taux_conformite}%</div>
-      <div class="stat-sub">${dash.traitements_appliques} traitements</div>
-    </div>
-    <div class="stat-card ${dash.alertes_actives>0?'danger':'teal'}">
-      <div class="stat-label">Alertes actives</div>
-      <div class="stat-value">${dash.alertes_actives}</div>
-      <div class="stat-sub">à traiter</div>
+  c.innerHTML=`
+  <div class="section-header">
+    <h3>Rapports & Statistiques</h3>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-secondary" onclick="telechargerRapportMensuel()">📄 Rapport mensuel PDF</button>
     </div>
   </div>
-
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-    <div class="card">
-      <div class="card-title">Évolution pH (30 jours)</div>
-      ${miniChart(evol, 'pH', 'var(--accent)')}
-      <div style="font-size:11px; color:var(--text3); margin-top:6px; font-family:var(--mono);">Norme : 6.5 – 8.5</div>
-    </div>
-    <div class="card">
-      <div class="card-title">Évolution Turbidité (30 jours)</div>
-      ${miniChart(evol, 'turbidite', 'var(--accent2)')}
-      <div style="font-size:11px; color:var(--text3); margin-top:6px; font-family:var(--mono);">Norme : ≤ 5 NTU</div>
-    </div>
-    <div class="card">
-      <div class="card-title">Évolution DCO (30 jours)</div>
-      ${miniChart(evol, 'DCO', 'var(--warn)')}
-      <div style="font-size:11px; color:var(--text3); margin-top:6px; font-family:var(--mono);">Norme : ≤ 125 mg/L</div>
-    </div>
-    <div class="card">
-      <div class="card-title">Évolution Coliformes (30 jours)</div>
-      ${miniChart(evol, 'coliformes', 'var(--danger)')}
-      <div style="font-size:11px; color:var(--text3); margin-top:6px; font-family:var(--mono);">Norme : ≤ 1000 UFC/100mL</div>
-    </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="stat-card teal"><div class="stat-label">Ce mois</div><div class="stat-value">${dash.prelevements_ce_mois}</div><div class="stat-sub">prélèvements</div></div>
+    <div class="stat-card blue"><div class="stat-label">Taux conformité</div><div class="stat-value">${dash.taux_conformite}%</div><div class="stat-sub">${dash.traitements_appliques} traitements</div></div>
+    <div class="stat-card ${dash.alertes_actives>0?'danger':'teal'}"><div class="stat-label">Alertes actives</div><div class="stat-value">${dash.alertes_actives}</div><div class="stat-sub">à traiter</div></div>
   </div>
-
-  <div class="card">
-    <div class="card-title">Tableau récapitulatif — Données brutes</div>
-    <div class="table-wrap">
-    <table>
-      <thead><tr>
-        <th>Date</th><th>pH</th><th>Turbidité</th><th>DCO</th><th>DBO5</th><th>Coliformes</th>
-      </tr></thead>
-      <tbody>
-        ${evol.length===0
-          ? `<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">Aucune donnée sur 30 jours</td></tr>`
-          : evol.map(d=>`<tr>
-              <td class="mono">${d.date}</td>
-              <td class="mono" style="color:${d.pH?(d.pH<6.5||d.pH>8.5?'var(--warn)':'var(--ok)'):'var(--text3)'}">${fmt(d.pH,1)}</td>
-              <td class="mono" style="color:${d.turbidite?(d.turbidite>5?'var(--warn)':'var(--ok)'):'var(--text3)'}">${fmt(d.turbidite,1)}</td>
-              <td class="mono" style="color:${d.DCO?(d.DCO>125?'var(--warn)':'var(--ok)'):'var(--text3)'}">${fmt(d.DCO,0)}</td>
-              <td class="mono" style="color:${d.DBO5?(d.DBO5>25?'var(--warn)':'var(--ok)'):'var(--text3)'}">${fmt(d.DBO5,0)}</td>
-              <td class="mono" style="color:${d.coliformes?(d.coliformes>1000?'var(--warn)':'var(--ok)'):'var(--text3)'}">${fmt(d.coliformes,0)}</td>
-            </tr>`).join('')}
-      </tbody>
-    </table>
-    </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div class="card"><div class="card-title">pH — 30 jours</div>${miniChart(evol,'pH','var(--accent)')}<div style="font-size:11px;color:var(--text3);margin-top:6px;">Norme : 6.5–8.5</div></div>
+    <div class="card"><div class="card-title">Turbidité — 30 jours</div>${miniChart(evol,'turbidite','var(--accent2)')}<div style="font-size:11px;color:var(--text3);margin-top:6px;">Norme : ≤ 5 NTU</div></div>
+    <div class="card"><div class="card-title">DCO — 30 jours</div>${miniChart(evol,'DCO','var(--warn)')}<div style="font-size:11px;color:var(--text3);margin-top:6px;">Norme : ≤ 125 mg/L</div></div>
+    <div class="card"><div class="card-title">Coliformes — 30 jours</div>${miniChart(evol,'coliformes','var(--danger)')}<div style="font-size:11px;color:var(--text3);margin-top:6px;">Norme : ≤ 1000 UFC/100mL</div></div>
   </div>`;
 };
 
+async function telechargerPdfPrelevement(id) {
+  toast('Génération du PDF…','info');
+  try {
+    const res = await apiFetch(`/pdf/prelevement/${id}`);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url; a.download=`prelevement_${id}.pdf`; a.click();
+    URL.revokeObjectURL(url);
+    toast('PDF téléchargé','ok');
+  } catch(e) { toast('Erreur génération PDF','error'); }
+}
+
+async function telechargerRapportMensuel() {
+  const now = new Date();
+  toast('Génération du rapport mensuel…','info');
+  try {
+    const res = await apiFetch(`/pdf/rapport-mensuel?annee=${now.getFullYear()}&mois=${now.getMonth()+1}`);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url; a.download=`rapport_${now.getFullYear()}_${String(now.getMonth()+1).padStart(2,'0')}.pdf`; a.click();
+    URL.revokeObjectURL(url);
+    toast('Rapport PDF téléchargé','ok');
+  } catch(e) { toast('Erreur génération rapport','error'); }
+}
+
 // ══════════════════════════════════════════════════════════════
-//  7. TECHNICIENS
+//  TECHNICIENS & SITES
 // ══════════════════════════════════════════════════════════════
 pages.techniciens = async () => {
-  const c = document.getElementById('content');
-  c.innerHTML = `<div class="empty"><div class="icon">⏳</div></div>`;
   const data = await get('/techniciens');
-
-  c.innerHTML = `
-  <div class="section-header">
-    <h3>Techniciens (${data.length})</h3>
-    <button class="btn btn-primary" onclick="openNewTechnicien()">+ Ajouter</button>
+  document.getElementById('content').innerHTML=`
+  <div class="section-header"><h3>Techniciens (${data.length})</h3><button class="btn btn-primary" onclick="openNewTechnicien()">+ Ajouter</button></div>
+  <div class="card" style="padding:0;overflow:hidden;"><table>
+    <thead><tr><th>#</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Téléphone</th><th>Rôle</th><th>Statut</th></tr></thead>
+    <tbody>${data.map(t=>`<tr>
+      <td class="mono">${t.id}</td><td>${t.nom}</td><td>${t.prenom}</td>
+      <td style="font-size:12px;color:var(--text2);">${t.email||'—'}</td>
+      <td class="mono">${t.telephone||'—'}</td>
+      <td><span class="badge badge-blue">${t.role}</span></td>
+      <td>${t.actif?'<span class="badge badge-ok">Actif</span>':'<span class="badge badge-neutral">Inactif</span>'}</td>
+    </tr>`).join('')}</tbody>
+  </table></div>`;
+};
+function openNewTechnicien() {
+  openModal(`<div class="modal-header"><h3>👤 Nouveau technicien</h3><button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button></div>
+  <div class="form-grid">
+    <div class="form-group"><label>Nom *</label><input id="t-nom"/></div>
+    <div class="form-group"><label>Prénom *</label><input id="t-prenom"/></div>
+    <div class="form-group"><label>Email</label><input id="t-email" type="email"/></div>
+    <div class="form-group"><label>Téléphone</label><input id="t-tel"/></div>
+    <div class="form-group"><label>Rôle</label><select id="t-role"><option>Technicien</option><option>Chef de Labo</option><option>Admin</option></select></div>
   </div>
-  <div class="card" style="padding:0; overflow:hidden;">
-    <table>
-      <thead><tr>
-        <th>#</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Téléphone</th><th>Rôle</th><th>Statut</th>
-      </tr></thead>
-      <tbody>
-        ${data.map(t=>`<tr>
-          <td class="mono">${t.id}</td>
-          <td>${t.nom}</td>
-          <td>${t.prenom}</td>
-          <td style="font-size:12px; color:var(--text2);">${t.email||'—'}</td>
-          <td class="mono">${t.telephone||'—'}</td>
-          <td><span class="badge badge-blue">${t.role}</span></td>
-          <td>${t.actif?'<span class="badge badge-ok">Actif</span>':'<span class="badge badge-neutral">Inactif</span>'}</td>
-        </tr>`).join('')}
-      </tbody>
-    </table>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Annuler</button><button class="btn btn-primary" onclick="saveTechnicien()">💾 Enregistrer</button></div>`);
+}
+async function saveTechnicien() {
+  const payload={nom:document.getElementById('t-nom').value,prenom:document.getElementById('t-prenom').value,email:document.getElementById('t-email').value||null,telephone:document.getElementById('t-tel').value||null,role:document.getElementById('t-role').value,actif:true};
+  if(!payload.nom||!payload.prenom){toast('Nom et prénom requis','error');return;}
+  await post('/techniciens',payload); closeModal(); toast('Technicien ajouté','ok'); pages.techniciens();
+}
+
+pages.points = async () => {
+  const data = await get('/pointsprelevement');
+  document.getElementById('content').innerHTML=`
+  <div class="section-header"><h3>Sites de prélèvement (${data.length})</h3><button class="btn btn-primary" onclick="openNewPoint()">+ Ajouter</button></div>
+  ${data.map(p=>`<div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start;">
+    <div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">📍 ${p.nom}</div>
+    <div style="font-size:13px;color:var(--text2);">${p.description||'—'}</div>
+    <div style="font-size:12px;color:var(--text3);margin-top:6px;font-family:var(--mono);">${p.localisation||''}</div></div>
+    <span class="badge ${p.actif?'badge-ok':'badge-neutral'}">${p.actif?'Actif':'Inactif'}</span>
+  </div></div>`).join('')}`;
+};
+function openNewPoint() {
+  openModal(`<div class="modal-header"><h3>📍 Nouveau site</h3><button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button></div>
+  <div class="form-grid"><div class="form-group full"><label>Nom *</label><input id="s-nom"/></div><div class="form-group full"><label>Description</label><input id="s-desc"/></div><div class="form-group full"><label>Localisation</label><input id="s-loc"/></div></div>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Annuler</button><button class="btn btn-primary" onclick="savePoint()">💾 Enregistrer</button></div>`);
+}
+async function savePoint() {
+  await post('/pointsprelevement',{nom:document.getElementById('s-nom').value,description:document.getElementById('s-desc').value||null,localisation:document.getElementById('s-loc').value||null,actif:true});
+  closeModal(); toast('Site ajouté','ok'); pages.points();
+}
+
+// ══════════════════════════════════════════════════════════════
+//  UTILISATEURS (Admin seulement)
+// ══════════════════════════════════════════════════════════════
+pages.utilisateurs = async () => {
+  if(CURRENT_USER?.role !== 'Admin') { document.getElementById('content').innerHTML=`<div class="empty"><div class="icon">🔒</div><p>Accès réservé aux administrateurs</p></div>`; return; }
+  const data = await get('/auth/utilisateurs');
+  document.getElementById('content').innerHTML=`
+  <div class="section-header"><h3>Utilisateurs (${data.length})</h3><button class="btn btn-primary" onclick="openNewUtilisateur()">+ Créer un compte</button></div>
+  <div class="card" style="padding:0;overflow:hidden;"><table>
+    <thead><tr><th>#</th><th>Username</th><th>Nom complet</th><th>Email</th><th>Rôle</th><th>Dernière connexion</th><th>Statut</th></tr></thead>
+    <tbody>${data.map(u=>`<tr>
+      <td class="mono">${u.id}</td><td class="mono">${u.username}</td><td>${u.nomComplet}</td>
+      <td style="font-size:12px;color:var(--text2);">${u.email||'—'}</td>
+      <td><span class="badge ${u.role==='Admin'?'badge-danger':u.role==='ChefLabo'?'badge-warn':'badge-blue'}">${u.role}</span></td>
+      <td class="mono">${fmtDate(u.derniereConnexion)}</td>
+      <td>${u.actif?'<span class="badge badge-ok">Actif</span>':'<span class="badge badge-neutral">Inactif</span>'}</td>
+    </tr>`).join('')}</tbody>
+  </table></div>`;
+};
+
+function openNewUtilisateur() {
+  openModal(`<div class="modal-header"><h3>🔐 Créer un compte utilisateur</h3><button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button></div>
+  <div class="form-grid">
+    <div class="form-group"><label>Username *</label><input id="u-user"/></div>
+    <div class="form-group"><label>Mot de passe *</label><input type="password" id="u-pass"/></div>
+    <div class="form-group"><label>Nom complet *</label><input id="u-nom"/></div>
+    <div class="form-group"><label>Email</label><input type="email" id="u-email"/></div>
+    <div class="form-group"><label>Rôle</label><select id="u-role"><option value="Technicien">Technicien</option><option value="ChefLabo">Chef de Labo</option><option value="Admin">Admin</option></select></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Annuler</button><button class="btn btn-primary" onclick="saveUtilisateur()">💾 Créer</button></div>`);
+}
+
+async function saveUtilisateur() {
+  const payload={username:document.getElementById('u-user').value,password:document.getElementById('u-pass').value,nomComplet:document.getElementById('u-nom').value,email:document.getElementById('u-email').value||null,role:document.getElementById('u-role').value};
+  if(!payload.username||!payload.password||!payload.nomComplet){toast('Champs obligatoires manquants','error');return;}
+  const res=await post('/auth/register',payload);
+  if(res.message){closeModal();toast(res.message,'ok');pages.utilisateurs();}
+  else toast('Erreur création compte','error');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  PROFIL
+// ══════════════════════════════════════════════════════════════
+pages.profil = () => {
+  document.getElementById('content').innerHTML=`
+  <div style="max-width:500px;">
+    <div class="card">
+      <div class="card-title">Mon profil</div>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+        <div style="width:56px;height:56px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--bg);">${(CURRENT_USER?.nomComplet||'A')[0]}</div>
+        <div>
+          <div style="font-size:16px;font-weight:600;">${CURRENT_USER?.nomComplet||'—'}</div>
+          <div style="font-size:13px;color:var(--text2);">@${CURRENT_USER?.username||'—'}</div>
+          <span class="badge badge-blue" style="margin-top:4px;">${CURRENT_USER?.role||'—'}</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Changer le mot de passe</div>
+      <div class="form-grid" style="grid-template-columns:1fr;">
+        <div class="form-group"><label>Ancien mot de passe</label><input type="password" id="p-old"/></div>
+        <div class="form-group"><label>Nouveau mot de passe</label><input type="password" id="p-new"/></div>
+        <div class="form-group"><label>Confirmer nouveau mot de passe</label><input type="password" id="p-confirm"/></div>
+      </div>
+      <div style="margin-top:16px;">
+        <button class="btn btn-primary" onclick="changerMotDePasse()">🔐 Changer le mot de passe</button>
+      </div>
+    </div>
   </div>`;
 };
 
-function openNewTechnicien() {
-  openModal(`
-    <div class="modal-header">
-      <h3>👤 Nouveau technicien</h3>
-      <button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button>
-    </div>
-    <div class="form-grid">
-      <div class="form-group"><label>Nom *</label><input id="t-nom" type="text"/></div>
-      <div class="form-group"><label>Prénom *</label><input id="t-prenom" type="text"/></div>
-      <div class="form-group"><label>Email</label><input id="t-email" type="email"/></div>
-      <div class="form-group"><label>Téléphone</label><input id="t-tel" type="tel"/></div>
-      <div class="form-group">
-        <label>Rôle</label>
-        <select id="t-role">
-          <option>Technicien</option>
-          <option>Chef de Labo</option>
-          <option>Admin</option>
-        </select>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="saveTechnicien()">💾 Enregistrer</button>
-    </div>
-  `);
-}
-
-async function saveTechnicien() {
-  const payload = {
-    nom: document.getElementById('t-nom').value,
-    prenom: document.getElementById('t-prenom').value,
-    email: document.getElementById('t-email').value||null,
-    telephone: document.getElementById('t-tel').value||null,
-    role: document.getElementById('t-role').value,
-    actif: true
-  };
-  if(!payload.nom || !payload.prenom) { toast('Nom et prénom requis', 'error'); return; }
-  await post('/techniciens', payload);
-  closeModal();
-  toast('Technicien ajouté', 'ok');
-  pages.techniciens();
-}
-
-// ══════════════════════════════════════════════════════════════
-//  8. SITES DE PRÉLÈVEMENT
-// ══════════════════════════════════════════════════════════════
-pages.points = async () => {
-  const c = document.getElementById('content');
-  const data = await get('/pointsprelevement');
-
-  c.innerHTML = `
-  <div class="section-header">
-    <h3>Sites de prélèvement (${data.length})</h3>
-    <button class="btn btn-primary" onclick="openNewPoint()">+ Ajouter un site</button>
-  </div>
-  ${data.map(p=>`
-  <div class="card">
-    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-      <div>
-        <div style="font-weight:600; font-size:14px; margin-bottom:4px;">📍 ${p.nom}</div>
-        <div style="font-size:13px; color:var(--text2);">${p.description||'—'}</div>
-        <div style="font-size:12px; color:var(--text3); margin-top:6px; font-family:var(--mono);">${p.localisation||''}</div>
-      </div>
-      <span class="badge ${p.actif?'badge-ok':'badge-neutral'}">${p.actif?'Actif':'Inactif'}</span>
-    </div>
-  </div>`).join('')}`;
-};
-
-function openNewPoint() {
-  openModal(`
-    <div class="modal-header">
-      <h3>📍 Nouveau site</h3>
-      <button class="btn btn-sm btn-secondary btn-icon" onclick="closeModal()">✕</button>
-    </div>
-    <div class="form-grid">
-      <div class="form-group full"><label>Nom du site *</label><input id="s-nom" type="text"/></div>
-      <div class="form-group full"><label>Description</label><input id="s-desc" type="text"/></div>
-      <div class="form-group full"><label>Localisation</label><input id="s-loc" type="text"/></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="savePoint()">💾 Enregistrer</button>
-    </div>
-  `);
-}
-
-async function savePoint() {
-  await post('/pointsprelevement', {
-    nom: document.getElementById('s-nom').value,
-    description: document.getElementById('s-desc').value||null,
-    localisation: document.getElementById('s-loc').value||null,
-    actif: true
-  });
-  closeModal(); toast('Site ajouté', 'ok'); pages.points();
+async function changerMotDePasse() {
+  const ancienMdp=document.getElementById('p-old').value;
+  const nouveauMdp=document.getElementById('p-new').value;
+  const confirmMdp=document.getElementById('p-confirm').value;
+  if(nouveauMdp!==confirmMdp){toast('Les mots de passe ne correspondent pas','error');return;}
+  if(nouveauMdp.length<6){toast('Mot de passe trop court (6 caractères minimum)','error');return;}
+  const res=await put('/auth/password',{ancienMotDePasse:ancienMdp,nouveauMotDePasse:nouveauMdp});
+  if(res.message){toast(res.message,'ok');document.getElementById('p-old').value='';document.getElementById('p-new').value='';document.getElementById('p-confirm').value='';}
+  else toast('Erreur changement mot de passe','error');
 }
 
 // ══════════════════════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════════════════════
-navigate('dashboard');
-refreshAlerteBadge();
-setInterval(refreshAlerteBadge, 60000);
+if(AUTH_TOKEN && CURRENT_USER) {
+  showApp();
+} else {
+  document.getElementById('login-page').style.display = 'flex';
+}
 </script>
 </body>
 </html>
